@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package di.uniba.map.b.adventure.type;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 /**
- *
- * @author pierpaolo
+ * Classe che rappresenta una stanza.
  */
 public class Room {
 
@@ -20,9 +16,15 @@ public class Room {
 
     private String description;
 
+    private ImageIcon scenario;
+
     private String look;
 
     private boolean visible = true;
+
+    private boolean locked = false;
+
+    private boolean dark = false;
 
     private Room south = null;
 
@@ -34,14 +36,15 @@ public class Room {
     
     private final List<AdvObject> objects=new ArrayList<>();
 
-    public Room(int id) {
-        this.id = id;
-    }
-
     public Room(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
+        setScenario();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -66,6 +69,22 @@ public class Room {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean isDark(){
+        return dark;
+    }
+
+    public void setDark(boolean dark){
+        this.dark = dark;
     }
 
     public Room getSouth() {

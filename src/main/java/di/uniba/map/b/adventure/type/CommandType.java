@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package di.uniba.map.b.adventure.type;
 
 /**
- *
- * @author pierpaolo
+ * Classe enumerativa
  */
 public enum CommandType {
-    END, INVENTORY, NORD, SOUTH, EAST, WEST, OPEN, CLOSE, PUSH, PULL, WALK_TO, PICK_UP, TALK_TO, GIVE, USE, LOOK_AT, TURN_ON, TURN_OFF
+    INVENTORY, NORD, SOUTH, EAST, WEST, END, SINK, STAB, HELP, LOOK_AT, PICK_UP, USE, PUSH, INSPECT, MOVE, UNLOCK, START_TIMER, STOP_TIMER, SAVE, GET_SAVES 
 }
