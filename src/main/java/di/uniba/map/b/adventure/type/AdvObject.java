@@ -20,18 +20,28 @@ public class AdvObject {
     private String name;
 
     private String description;
-    
-    private Set<String> alias;
 
-    private boolean openable = false;
+    private Set<String> alias;
 
     private boolean pickupable = true;
 
+    private boolean usable = false;
+
+    private boolean moveable = false;
+
+    private boolean inspectable = false;
+
     private boolean pushable = false;
 
-    private boolean open = false;
+    private boolean unlockable = false;
 
-    private boolean push = false;
+    private boolean invisible = false;
+
+    private boolean inspected = false;
+
+    private boolean pushed = false;
+
+    private String password = null;
 
     public AdvObject(int id) {
         this.id = id;
@@ -46,13 +56,6 @@ public class AdvObject {
         this.id = id;
         this.name = name;
         this.description = description;
-    }
-
-    public AdvObject(int id, String name, String description, Set<String> alias) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.alias = alias;
     }
 
     public String getName() {
@@ -71,20 +74,23 @@ public class AdvObject {
         this.description = description;
     }
 
-    public boolean isOpenable() {
-        return openable;
-    }
-
-    public void setOpenable(boolean openable) {
-        this.openable = openable;
-    }
-
     public boolean isPickupable() {
         return pickupable;
     }
 
     public void setPickupable(boolean pickupable) {
         this.pickupable = pickupable;
+        if (pickupable) {
+            this.usable = true;
+        }
+    }
+
+    public boolean isUsable() {
+        return usable;
+    }
+
+    public void setUsable(boolean usable) {
+        this.usable = usable;
     }
 
     public boolean isPushable() {
@@ -95,20 +101,58 @@ public class AdvObject {
         this.pushable = pushable;
     }
 
-    public boolean isOpen() {
-        return open;
+    public boolean isMoveable() {
+        return moveable;
     }
 
-    public void setOpen(boolean open) {
-        this.open = open;
+    public void setMoveable(boolean moveable) {
+        this.moveable = moveable;
     }
 
-    public boolean isPush() {
-        return push;
+    public boolean isInspectable() {
+        return inspectable;
     }
 
-    public void setPush(boolean push) {
-        this.push = push;
+    public void setInspectable(boolean inspectable) {
+        this.inspectable = inspectable;
+    }
+
+    public boolean isUnlockable() {
+        return unlockable;
+    }
+
+    public void setUnlockable(boolean unlockable) {
+        this.unlockable = unlockable;
+    }
+
+    public boolean isInvisible() {
+        return invisible;
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+        if (invisible) {
+            this.pickupable = false;
+        }
+    }
+
+    public boolean isInspected() {
+        return inspected;
+    }
+
+    public void setInspected(boolean inspected) {
+        this.inspected = inspected;
+        if (inspected) {
+            this.usable = true;
+        }
+    }
+
+    public boolean isPushed() {
+        return pushed;
+    }
+
+    public void setPushed(boolean push) {
+        this.pushed = push;
     }
 
     public Set<String> getAlias() {
@@ -118,7 +162,7 @@ public class AdvObject {
     public void setAlias(Set<String> alias) {
         this.alias = alias;
     }
-    
+
     public void setAlias(String[] alias) {
         this.alias = new HashSet<>(Arrays.asList(alias));
     }

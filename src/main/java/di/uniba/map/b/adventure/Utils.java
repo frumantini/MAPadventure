@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package di.uniba.map.b.adventure;
 
 import java.io.BufferedReader;
@@ -15,11 +10,16 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
- * @author pierpaolo
+ * Classe che contiene metodi di utilità
  */
 public class Utils {
 
+    /**
+     * Metodo che carica un file di testo in un Set di stringhe
+     * @param file File da caricare in memoria //(deve essere un file di testo)
+     * @return Set di stringhe contenente le righe del file di testo 
+     * @throws IOException Eccezione lanciata in caso di errore di I/O //(file non trovato, file non leggibile, ecc.)
+     */
     public static Set<String> loadFileListInSet(File file) throws IOException {
         Set<String> set = new HashSet<>();
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -30,6 +30,12 @@ public class Utils {
         return set;
     }
 
+    /**
+     * Metodo che effettua il parsing di una stringa
+     * @param string Stringa di cui effettuare il parsing
+     * @param stopwords Set di stringhe da rimuovere
+     * @return Lista di stringhe
+     */
     public static List<String> parseString(String string, Set<String> stopwords) {
         List<String> tokens = new ArrayList<>();
         String[] split = string.toLowerCase().split("\\s+");
