@@ -10,9 +10,15 @@ import di.uniba.map.b.adventure.type.Command;
 import di.uniba.map.b.adventure.type.CommandType;
 import di.uniba.map.b.adventure.type.Room;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Iterator;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
@@ -28,7 +34,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
  * del file o del DBMS dovrebbe anche essere codificata la logica del gioco
  * (nextMove) oltre alla descrizione di stanze, oggetti, ecc...
  *
- * @author pierpaolo
+ * @author fra
  */
 public class SinkingShipGame extends GameDescription {
 
@@ -103,8 +109,8 @@ public class SinkingShipGame extends GameDescription {
         unlock.setAlias(new String[] { "sblocca" });
         getCommands().add(unlock);
 
-        Command saveGame = new Command(CommandType.SAVE, "SAVEGAME");
-        saveGame.setAlias(new String[] { "SAVEGAME", "savegame" });
+        Command saveGame = new Command(CommandType.SAVE, "SAVE");
+        saveGame.setAlias(new String[] { "SAVE", "save" });
         getCommands().add(saveGame);
         Command incrementPbValue = new Command(CommandType.INCREMENT_PB_VALUE, "INCREMENTPBVALUE"); // progress bar
         incrementPbValue.setAlias(new String[] { "INCREMENTPBVALUE", "incrementpbvalue" });
@@ -118,6 +124,7 @@ public class SinkingShipGame extends GameDescription {
         Command stopTimer = new Command(CommandType.STOP_TIMER, "STOPTIMER");
         stopTimer.setAlias(new String[] { "STOPTIMER", "stoptimer" });
         getCommands().add(stopTimer);
+        
     }
 
     /**
@@ -130,19 +137,23 @@ public class SinkingShipGame extends GameDescription {
         try {
             RoomDescription info = new RoomDescription(namesFilePath, descriptionsFilePath);
 
-            Room cabinA = new Room(1_1, info.getName(0), info.getDescription(0));
-            Room floodedCabin = new Room(1_2, info.getName(25), info.getDescription(25));
+            Room cabinA = new Room(0, info.getName(0), info.getDescription(0));
+            Room cabinBed = new Room(19, info.getName(25), info.getDescription(25));
+            Room floodedCabin = new Room(1, info.getName(24), info.getDescription(24));
+            floodedCabin.setLocked(true);
             Room hallway3 = new Room(2, info.getName(1), info.getDescription(1));
-            hallway3.setLocked(true);
+            //hallway3.setLocked(true);
             Room cabinB = new Room(2, info.getName(2), info.getDescription(2));
+            //cabinB.setLocked(true);
             Room lobby3 = new Room(3, info.getName(3), info.getDescription(3));
-            Room lockedLobby = new Room(4_1, info.getName(4), info.getDescription(4));
-            Room bookshelf = new Room(4_1, info.getName(5), info.getDescription(5));
+            Room lockedLobby = new Room(41, info.getName(4), info.getDescription(4));
+            Room bookshelf = new Room(41, info.getName(5), info.getDescription(5));
             Room hallway2 = new Room(5, info.getName(6), info.getDescription(6));
-            Room darkRoom = new Room(6_1, info.getName(7), info.getDescription(7));
-            darkRoom.setDark(true);
-            Room Phi = new Room(18, info.getName(8), info.getDescription(8));
-            Room kitchen = new Room(6_2, info.getName(9), info.getDescription(9));
+            Room darkRoom = new Room(61, info.getName(7), info.getDescription(7));
+            darkRoom.setDark(true); //non credo che serva.SI SERVE
+            Room phi = new Room(18, info.getName(8), info.getDescription(8));
+            phi.setLocked(true);
+            Room kitchen = new Room(62, info.getName(9), info.getDescription(9));
             kitchen.setLocked(true);
             Room infirmary = new Room(7, info.getName(10), info.getDescription(10));
             Room table = new Room(7, info.getName(11), info.getDescription(11));
@@ -151,24 +162,28 @@ public class SinkingShipGame extends GameDescription {
             Room study = new Room(9, info.getName(13), info.getDescription(13));
             Room laboratory = new Room(10, info.getName(14), info.getDescription(14));
             laboratory.setLocked(true);
-            Room lobby2 = new Room(4_2, info.getName(15), info.getDescription(15));
+            Room lobby2 = new Room(42, info.getName(15), info.getDescription(15));
             Room goodsLift = new Room(11, info.getName(16), info.getDescription(16));
             Room bar = new Room(12, info.getName(17), info.getDescription(17));
             Room controlRoom = new Room(13, info.getName(18), info.getDescription(18));
             Room rustyDoor = new Room(13, info.getName(19), info.getDescription(19));
             Room cabin1 = new Room(14, info.getName(20), info.getDescription(20));
             cabin1.setLocked(true);
-            Room trapdoor = new Room(14, info.getName(21), info.getDescription(21));
-            trapdoor.setLocked(true);
-            Room mainRoom = new Room(15, info.getName(22), info.getDescription(22));
-            Room outside = new Room(16, info.getName(23), info.getDescription(23));
+            Room mainRoom = new Room(15, info.getName(21), info.getDescription(21));
+            mainRoom.setLocked(true);
+            Room outside = new Room(16, info.getName(22), info.getDescription(22));
             outside.setLocked(true);
-            Room helicopter = new Room(17, info.getName(24), info.getDescription(24));
+            Room helicopter = new Room(17, info.getName(23), info.getDescription(23));
+            // 24 è su floodedCabin
+            // 25 è su cabinBed
 
-            floodedCabin.setNorth(hallway3);
+            cabinA.setNorth(cabinBed);
+            cabinBed.setSouth(floodedCabin);
+            floodedCabin.setWest(hallway3);
+            floodedCabin.setSouth(cabinBed);
             hallway3.setNorth(cabinB);
             hallway3.setEast(lobby3);
-            cabinB.setNorth(lobby3);
+            cabinB.setSouth(hallway3);
             lobby3.setNorth(lockedLobby);
             lockedLobby.setNorth(hallway2);
             lockedLobby.setSouth(lobby3);
@@ -178,8 +193,8 @@ public class SinkingShipGame extends GameDescription {
             hallway2.setEast(tortureRoom);
             hallway2.setWest(darkRoom);
             hallway2.setSouth(lockedLobby);
-            darkRoom.setSouth(Phi);
-            Phi.setNorth(kitchen);
+            darkRoom.setSouth(phi);
+            phi.setNorth(kitchen);
             kitchen.setEast(infirmary);
             kitchen.setSouth(hallway2);
             infirmary.setNorth(table);
@@ -194,6 +209,7 @@ public class SinkingShipGame extends GameDescription {
             lobby2.setNorth(goodsLift);
             goodsLift.setWest(bar);
             goodsLift.setEast(outside);
+            goodsLift.setSouth(lobby2);
             bar.setSouth(goodsLift);
             bar.setNorth(controlRoom);
             controlRoom.setWest(rustyDoor);
@@ -202,34 +218,34 @@ public class SinkingShipGame extends GameDescription {
             rustyDoor.setSouth(controlRoom);
             cabin1.setSouth(controlRoom);
             cabin1.setEast(mainRoom);
-            trapdoor.setEast(mainRoom);
             mainRoom.setSouth(cabin1);
 
-            getRooms().add(cabinA);
-            getRooms().add(hallway3);
-            getRooms().add(cabinB);
-            getRooms().add(lobby3);
-            getRooms().add(lockedLobby);
-            getRooms().add(bookshelf);
-            getRooms().add(hallway2);
-            getRooms().add(darkRoom);
-            getRooms().add(Phi);
-            getRooms().add(kitchen);
-            getRooms().add(infirmary);
-            getRooms().add(table);
-            getRooms().add(tortureRoom);
-            getRooms().add(study);
-            getRooms().add(laboratory);
-            getRooms().add(lobby2);
-            getRooms().add(goodsLift);
-            getRooms().add(bar);
-            getRooms().add(controlRoom);
-            getRooms().add(rustyDoor);
-            getRooms().add(cabin1);
-            getRooms().add(trapdoor);
-            getRooms().add(mainRoom);
-            getRooms().add(outside);
-            getRooms().add(helicopter);
+            getRooms().add(cabinA); //0
+            getRooms().add(cabinBed); //1
+            getRooms().add(floodedCabin); //2
+            getRooms().add(hallway3); //3
+            getRooms().add(cabinB); //4
+            getRooms().add(lobby3); //5
+            getRooms().add(lockedLobby); // 6
+            getRooms().add(bookshelf); //7
+            getRooms().add(hallway2);   //8
+            getRooms().add(darkRoom);  //9
+            getRooms().add(phi); //10
+            getRooms().add(kitchen); //11
+            getRooms().add(infirmary); //12
+            getRooms().add(table); //13
+            getRooms().add(tortureRoom); //14
+            getRooms().add(study); //15
+            getRooms().add(laboratory); //16
+            getRooms().add(lobby2); //17
+            getRooms().add(goodsLift); //18
+            getRooms().add(bar); //19
+            getRooms().add(controlRoom); //20
+            getRooms().add(rustyDoor); //21
+            getRooms().add(cabin1); //22
+            getRooms().add(mainRoom); //23
+            getRooms().add(outside); //24
+            getRooms().add(helicopter); //25
 
             AdvObject lantern = new AdvObject(1, "Lanterna",
                     "Una lanterna spenta. Servirebbe qualcosa per accenderla.");
@@ -240,16 +256,16 @@ public class SinkingShipGame extends GameDescription {
             pillow.setAlias(new String[] { "cuscino", "guanciale" });
             pillow.setPickupable(false);
             pillow.setMoveable(true);
-            cabinA.getObjects().add(pillow);
+            cabinBed.getObjects().add(pillow);
 
-            AdvObject key = new AdvObject(3, "Chiave", "Una chiave antica.");
+            /*AdvObject key = new AdvObject(3, "Chiave", "Una chiave antica.");
             key.setAlias(new String[] { "chiave" });
-            key.setInvisible(true);
-            cabinA.getObjects().add(key);
+            key.setPickupable(false);
+            cabinA.getObjects().add(key);*/
 
             AdvObject dresser = new AdvObject(4, "Cassettiera",
                     "Una cassettiera vuota. Forse puoi bloccare la porta spostandola");
-            dresser.setAlias(new String[] { "cassettiera", "comodino", "credenza" });
+            dresser.setAlias(new String[] { "cassettiera", "comodino", "credenza", "cassapanca" });
             dresser.setPickupable(false);
             dresser.setMoveable(true);
             lobby3.getObjects().add(dresser);
@@ -262,9 +278,13 @@ public class SinkingShipGame extends GameDescription {
             oil.setAlias(new String[] { "olio lubrificante", "olio", "lubrificante" });
             tortureRoom.getObjects().add(oil);
 
-            AdvObject book = new AdvObject(7, "Libro", "Un libro di nautica. Sembra essereci qualcosa dentro.");
-            book.setAlias(new String[] { "libro", "volume" });
+            AdvObject map = new AdvObject(12, "Mappa", "Una mappa della nave."); // MOSTRABILE???
+            map.setAlias(new String[] { "mappa", "carta", "carta geografica" });
+
+            AdvObjectContainer book = new AdvObjectContainer(7, "Libro", "Un libro di nautica. Sembra essereci qualcosa dentro.");
+            book.setAlias(new String[] { "libro", "volume", "libro di nautica", "volume di nautica"});
             book.setInspectable(true);
+            book.add(map);
             study.getObjects().add(book);
 
             AdvObject button = new AdvObject(8, "Pulsante", "Un pulsante verde. Potrebbe sbloccare qualcosa.");
@@ -294,7 +314,7 @@ public class SinkingShipGame extends GameDescription {
 
             getObjectsList().add(lantern);
             getObjectsList().add(pillow);
-            getObjectsList().add(key);
+            //getObjectsList().add(key);
             getObjectsList().add(dresser);
             getObjectsList().add(nipper);
             getObjectsList().add(oil);
@@ -321,44 +341,59 @@ public class SinkingShipGame extends GameDescription {
         setRooms();
     }
 
+    public void playSound(String soundFilePath) {
+        try {
+            File soundFile = new File(soundFilePath);
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(soundFile));
+            clip.start();
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public String inventoryCommand() {
         String out = "Nel tuo inventario ci sono:\n";
         for (AdvObject o : getInventory()) {
-            out += o.getName() + ": " + o.getDescription();
+            out += "\n" + o.getName() + ": " + o.getDescription();
         }
         return out;
     }
 
     public String endCommand() {
         String out = "Decidi di arrenderti e di morire qui. Distrutto ti stendi e aspetti che il mare ti sommerga.\n";
-        return out;
+        
         engine.endGame();
+        return out;
     }
 
     public String sinkCommand() {
         String out = "All'improvviso, non si sa da dove si sente: ''Tentativo di fuga rilevato. Attivazione protocollo di autodistruzione, tutte le porte verranno aperte''. Prima di realizzare cosa sia successo, le onde ti travolgono, affondando completamente la barca.\n";
-        return out;
+
         engine.endGame();
+        return out;
     }
 
     public String stabCommand() {
         String out = "''Non ce la faccio ad aspettare qui ancora!'' urli e ti appresti a correre verso l'elicottero. All'improvviso senti un dolore atroce, Phi ti ha infilzato con il coltello da cucina. ''Mi dispiace, ma neanche io voglio aspettare'' ti dice e sale sull'elicottero. ''Ma avevi detto che il coltello non ci serviva...'', bisbigli più a te stesso che a lei. Muori dissanguato...sei incredibile...\n";
-        return out;
+
         engine.endGame();
+        return out;
     }
 
     /**
      * Metodo per gestire il comando help.
      * 
      * @return
-     */
+     *//*
     public String helpCommand() {
         String out = "I comandi disponibili sono:\n";
         for (Command c : getCommands()) {
             out += c.getName() + "\n";
         }
         return out;
-    }
+    }*/
 
     /**
      * Metodo per gestire l'osservazione delle stanze.
@@ -371,13 +406,16 @@ public class SinkingShipGame extends GameDescription {
         if (getCurrentRoom().isDark()) {
             out = "La stanza è completamente buia, è impossibile orientarsi.";
         } else {
-            out = getCurrentRoom().getDescription() + "Nella stanza c'è:\n";
+            out = getCurrentRoom().getDescription() + "\nNella stanza c'è:\n";
             if (getCurrentRoom().getObjects().size() > 0) {
                 for (AdvObject o : getCurrentRoom().getObjects()) {
                     if (!getInventory().contains(o)) {
                         nObjects++;
                         out += o.getName() + ": " + o.getDescription() + "\n";
                     }
+                }
+                if (nObjects == 0) { //ma serve sto controllo?
+                    out = "Non c'è niente di interessante qui.";
                 }
             } else {
                 out = "Non c'è niente di interessante qui.";
@@ -397,21 +435,21 @@ public class SinkingShipGame extends GameDescription {
         String out = "";
         if (p.getObject() != null) {
             if (p.getObject().isPickupable()) {
-                getInventory().add(p.getObject());
-                getCurrentRoom().getObjects().remove(p.getObject());
-                out = "Hai raccolto: " + p.getObject().getDescription();
                 if (p.getObject().getId() == 3) {
                     getInventory().add(p.getObject());
                     getCurrentRoom().getObjects().remove(p.getObject());
+                        playSound("resources/porthole.wav");
+                    out = "Hai raccolto: " + p.getObject().getDescription() + " All'improvviso, senti un rumore alle tue spalle, verso Sud";
+                } else {
+                    getInventory().add(p.getObject());
+                    getCurrentRoom().getObjects().remove(p.getObject());
                     out = "Hai raccolto: " + p.getObject().getDescription();
-                    setCurrentRoom(getRooms().get(1_2));
-                    // suono
                 }
             } else {
-                out = "Non puoi raccogliere questo oggetto.";
+                out = "Non c'è nulla da raccogliere qui.";
             }
         } else {
-            out = "Non c'è niente da raccogliere qui.";
+            out = "Non ho capito cosa hai detto!";
         }
         return out;
     }
@@ -426,37 +464,63 @@ public class SinkingShipGame extends GameDescription {
         String out = "";
         if (p.getInvObject() != null) {
             if (p.getInvObject().isUsable()) {
-                if ((p.getObject().getId() == 1) && (getCurrentRoom().getId() != 18)) {
-                    out = "Non c'è niente con cui accedere la lanterna.";
-                } else {
-                    out = "Hai acceso la lanterna. Ora puoi entrare nella stanza buia.";
-                    getRooms().get(6_2).setLocked(false);
+                int idObject = p.getInvObject().getId();
+                switch (idObject) {
+                    case 1:
+                        if (getCurrentRoom().getId() != 18) {
+                            out = "Non c'è niente con cui accedere la lanterna.";
+                        } else {
+                            out = "Hai acceso la lanterna. Ora puoi entrare nella stanza buia.";
+                            getRooms().get(62).setLocked(false);
+                            getCurrentRoom().getObjects().remove(p.getObject());
+                        }
+                        break;
+                    case 3:
+                        if (getCurrentRoom().getId() == 1){
+                            out = "Hai aperto la porta della cabina.";
+                            getRooms().get(1).setLocked(false); //serve?
+                            getRooms().get(2).setLocked(false);
+                            getCurrentRoom().getObjects().remove(p.getObject());
+                        } else {
+                            out = "Girati a Sud per aprire la porta della cabina.";
+                        }
+                        break;
+                    case 5:
+                        if (getCurrentRoom().getId() == 5) {
+                            out = "Hai rotto il lucchetto. Ora puoi accedere alla stanza a Est";
+                            getRooms().get(14).setLocked(false); //14o8
+                            getCurrentRoom().getObjects().remove(p.getObject());
+                        }
+                        break;
+                    case 6:
+                        if (getCurrentRoom().getId() == 13) {
+                            out = "Hai lubrificato la maniglia. Ora puoi accedere alla stanza a Nord";
+                            getRooms().get(14).setLocked(false);
+                            getCurrentRoom().getObjects().remove(p.getObject());
+                        }
+                        break;
+                    case 7:
+                        if ((p.getInvObject().isInspected()) && (getCurrentRoom().getId() == 41)) {
+                            out = "Hai inserito il libro nella libreria. La libreria comincia a muoversi. Ora puoi accedere alla stanza a Nord";
+                            getRooms().get(10).setLocked(false);
+                            getCurrentRoom().getObjects().remove(p.getObject());
+                        }
+                        break;
+                    case 11:
+                        if (getCurrentRoom().getId() == 11) {
+                            out = "Hai inserito la carta nel montacarichi. Ora puoi scegliere anche il pulsante a Est";
+                            getRooms().get(12).setLocked(false);
+                            getCurrentRoom().getObjects().remove(p.getObject());
+                        }
+                        break;
+                    default:
+                        out = "Non puoi usare questo oggetto in questa stanza.";
+                        break;
                 }
-                if (p.getInvObject().getId() == 3) {
-                    out = "Hai aperto la porta della cabina.";
-                    getRooms().get(2).setLocked(false);
-                }
-                if ((p.getInvObject().getId() == 5) && (getCurrentRoom().getId() == 5)) {
-                    out = "Hai rotto il lucchetto. Ora puoi accedere alla stanza a Est";
-                    getRooms().get(8).setLocked(false);
-                }
-                if ((p.getInvObject().getId() == 6) && (getCurrentRoom().getId() == 13)) {
-                    out = "Hai lubrificato la maniglia. Ora puoi accedere alla stanza a Nord";
-                    getRooms().get(14).setLocked(false);
-                }
-                if ((p.getInvObject().getId() == 7) && (p.getInvObject().isInspected())
-                        && (getCurrentRoom().getId() == 4_1)) {
-                    out = "Hai inserito il libro nella libreria. La libreria comincia a muoversi. Ora puoi accedere alla stanza a Nord";
-                    getRooms().get(10).setLocked(false);
-                }
-                if ((p.getInvObject().getId() == 11) && (getCurrentRoom().getId() == 11)) {
-                    out = "Hai inserito la carta nel montacarichi. Ora puoi scegliere anche il pulsante a Est";
-                    getRooms().get(12).setLocked(false);
-                }
+
             } else {
-                out = "Non puoi ancora usare questo oggetto.";
+                out = "Non hai nulla da usare. Devi prima raccogliere qualcosa.";
             }
-            out = "Non hai nulla da usare. Devi prima raccogliere qualcosa.";
         }
         return out;
     }
@@ -473,14 +537,15 @@ public class SinkingShipGame extends GameDescription {
             if (p.getObject().isPushable()) {
                 if (p.getObject().getId() == 8) {
                     out = "Hai premuto il pulsante. Senti Phi urlare dall'atrio: ''Le sbarre si sono aperte!''";
-                    getRooms().get(10).setSouth(getRooms().get(4_2));
+                    getCurrentRoom().getObjects().remove(p.getObject());
+                    getRooms().get(10).setSouth(getRooms().get(42));
                     getRooms().get(9).setLocked(false);
                 }
             } else {
-                out = "Non puoi premere questo oggetto.";
+                out = "Non c'è niente da premere qui.";
             }
         } else {
-            out = "Non c'è niente da premere qui.";
+            out = "Non ho capito cosa hai detto!";
         }
         return out;
     }
@@ -494,15 +559,16 @@ public class SinkingShipGame extends GameDescription {
     public String inspectCommand(ParserOutput p) {
         String out = "";
         if (p.getInvObject() == null && p.getObject().getId() != 7) {
-            out = "Non c'è niente da aprire qui.";
+            out = "Non c'è niente da ispezionare qui.";
         } else {
             if (p.getInvObject().isInspectable() && p.getInvObject().isInspected() == false) {
                 if (p.getInvObject() instanceof AdvObjectContainer) {
                     AdvObjectContainer c = (AdvObjectContainer) p.getInvObject();
                     if (!c.getList().isEmpty()) {
-                        out = c.getName() + "Sulla prima pagina sembra esserci scritto qualcosa... 'aguf'. ''E' 'fuga' al contrario, servirà a qualcosa?'' chiede Phi,"
-                            + "aggiungendo ''Forse dovremmo inserire il libro da qualche parte''."
-                            + "\nContiene:" + "\n";
+                        out = c.getName()
+                                + "Sulla prima pagina sembra esserci scritto qualcosa... 'aguf'. ''E' 'fuga' al contrario, servirà a qualcosa?'' chiede Phi,"
+                                + "aggiungendo ''Forse dovremmo inserire il libro da qualche parte''."
+                                + "\nContiene:" + "\n";
                         Iterator<AdvObject> it = c.getList().iterator();
                         while (it.hasNext()) {
                             AdvObject next = it.next();
@@ -513,16 +579,119 @@ public class SinkingShipGame extends GameDescription {
                         return out;
                     }
                     p.getInvObject().setInspected(true);
+                    //p.getObject().setUsable(true); //controlla
                 } else {
                     p.getInvObject().setInspected(true);
+                    //p.getObject().setUsable(true);//controlla
                 }
                 out = "Hai aperto nel tuo inventario: " + p.getInvObject().getName();
+                //p.getObject().setUsable(true);//controlla
             } else {
-                out = "Non puoi aprire questo oggetto.";
+                out = "Non puoi ispezionare questo oggetto.";
             }
         }
         return out;
     }
+
+    /**
+     * Metodo per gestire il comando move.
+     * 
+     * @param p
+     * @return
+     */
+    public String moveCommand(ParserOutput p) {
+        String out = "";
+        if (p.getObject() != null) {
+            if (p.getObject().isMoveable()) {
+                if (p.getObject().getId() == 2) {
+                    out = "Hai spostato il cuscino. Hai trovato una chiave!";
+                    getCurrentRoom().getObjects().remove(p.getObject());
+                    AdvObject key = new AdvObject(3, "Chiave", "Una chiave antica.");
+                    key.setAlias(new String[] { "chiave" });
+                    getCurrentRoom().getObjects().add(key);
+                    getObjectsList().add(key);
+                }
+                if (p.getObject().getId() == 4) {
+                    out = "Hai spostato la cassettiera e hai bloccato la porta. Hai rallentato il flusso dell'acqua!";
+                    getCurrentRoom().getObjects().remove(p.getObject());
+                    //getRooms().get(2).setLocked(true); //è necessario? nelle direzioni non ho messo la stanza 2 disponibile
+                    //rallenta timer
+                }
+                if (p.getObject().getId() == 10) {
+                    out = "Hai spostato il tappeto. Hai trovato la botola che porta alla stanza murata del piano inferiore. A Est c'è la botola.";
+                    getCurrentRoom().getObjects().remove(p.getObject());
+                    getRooms().get(15).setLocked(false);
+                    getRooms().get(42).setLocked(true);
+                }
+            } else {
+                out = "Non puoi spostare questo oggetto.";
+            }
+        } else {
+            out = "Non c'è niente da spostare qui.";
+        }
+        return out;
+    }
+
+    /**
+     * Metodo per gestire il comando unlock.
+     * 
+     * @param p
+     * @return
+     */
+    public String unlockCommand(ParserOutput p) {
+        String out = "";
+        if (p.getObject() != null) {
+            if (p.getObject().isUnlockable()) { //controllo su Id? Solo il telegrafo è sbloccabile
+                    if (p.getObject().getPassword().equals(p.getPasswordInput())) {
+                        out = "Hai sbloccato il telegrafo. E' stata mandata una richiesta di soccorso!";
+                        getCurrentRoom().getObjects().remove(p.getObject());
+                    } else {
+                        out = "Password errata.";
+                        //out = sinkCommand(); ????
+                    }
+            } else {
+                out = "Non puoi sbloccare questo oggetto.";
+            }
+        } else {
+            out = "Non c'è niente da sbloccare qui.";
+        }
+        return out;
+    }
+    
+    /*forse con engine non si può
+    public class GameOverException extends Exception {
+        public GameOverException(String message) {
+            super(message);
+        }
+    }
+    
+    public String unlockCommand(ParserOutput p) {
+        String out = "";
+        if (p.getObject() != null) {
+            if (p.getObject().isUnlockable()) {
+                if ("fuga".equals(p.getPasswordInput())) {
+                    try {
+                        throw new GameOverException("Hai inserito la password 'fuga'. Il gioco è finito!");
+                        //String out = "All'improvviso, non si sa da dove si sente: ''Tentativo di fuga rilevato. Attivazione protocollo di autodistruzione, tutte le porte verranno aperte''. Prima di realizzare cosa sia successo, le onde ti travolgono, affondando completamente la barca.\n";
+                        //return out;
+                        //engine.endGame();
+                    } catch (GameOverException e) {
+                        out = e.getMessage();
+                    }
+                } else if (p.getObject().getPassword().equals(p.getPasswordInput())) {
+                    out = "Hai sbloccato il telegrafo. E' stata mandata una richiesta di soccorso!";
+                } else {
+                    out = "Password errata.";
+                    //out = sinkCommand(); ????
+                }
+            } else {
+                out = "Non puoi sbloccare questo oggetto.";
+            }
+        } else {
+            out = "Non c'è niente da sbloccare qui.";
+        }
+        return out;
+    }*/
     /**
      * Metodo per gestire le mosse del giocatore.
      * 
@@ -533,44 +702,78 @@ public class SinkingShipGame extends GameDescription {
     public String nextMove(ParserOutput p) {
         boolean noroom = false;
         boolean newroom = false;
+        boolean lockroom = false;
         String out = "";
         CommandType command = p.getCommand().getType();
         switch (command) {
             case NORD:
-                if ((getCurrentRoom().getNorth() != null) && (!getCurrentRoom().isLocked())) {
-                    setCurrentRoom(getCurrentRoom().getNorth());
-
-                    newroom = true;
-                } else if ((getCurrentRoom().getNorth() != null) && (getCurrentRoom().isLocked())) {
-                    checkLock(command);
+                if (getCurrentRoom().getNorth() != null) {
+                    if (getCurrentRoom().isLocked() == false) {
+                        if (getCurrentRoom().getName().equals("lockedLobby")) {
+                            setCurrentRoom(getCurrentRoom().getNorth());
+                            newroom = true;
+                            playSound("resources/pots.wav");
+                        }
+                        setCurrentRoom(getCurrentRoom().getNorth());
+                        newroom = true;
+                    } else {
+                        /*if (getCurrentRoom().getName() == "hallway3") {
+                        getRooms().get(3).setLocked(false);
+                        setCurrentRoom(getCurrentRoom().getNorth());
+                        newroom = true;
+                        } else {
+                            //checkLock(command);
+                            noroom = true;
+                        }*/
+                        lockroom = true;
+                    }
                 } else {
                     noroom = true;
                 }
                 break;
             case EAST:
                 if (getCurrentRoom().getEast() != null) {
+                    if (getCurrentRoom().isLocked() == false) {
                     setCurrentRoom(getCurrentRoom().getEast());
                     newroom = true;
-                } else if ((getCurrentRoom().getEast() != null) && (getCurrentRoom().isLocked())) {
-                    checkLock(command);
+                    } else {
+                        /*if ((getCurrentRoom().getName() == "hallway3") && (getRooms().get(2).isLocked() == true)) {
+                        getRooms().get(3).setLocked(false);
+                        setCurrentRoom(getCurrentRoom().getNorth());
+                        //serve un timer per far terminare il testo prima di cambiare stanza?
+                        setCurrentRoom(getCurrentRoom().getEast());
+                        newroom = true;
+                        } else {
+                            //checkLock(command);
+                            lockroom = true;
+                        }*/
+                        lockroom = true;
+                    }
                 } else {
                     noroom = true;
                 }
                 break;
             case WEST:
                 if (getCurrentRoom().getWest() != null) {
-                    setCurrentRoom(getCurrentRoom().getWest());
-                    newroom = true;
-                } else if ((getCurrentRoom().getWest() != null) && (getCurrentRoom().isLocked())) {
-                    checkLock(command);
+                    if (getCurrentRoom().isLocked() == false) {
+                        setCurrentRoom(getCurrentRoom().getWest());
+                        newroom = true;
+                    } else {
+                        //checkLock(command);
+                        lockroom = true;
+                    }
                 } else {
                     noroom = true;
                 }
                 break;
-            case SOUTH:
-                if ((getCurrentRoom().getSouth() != null) && (!getCurrentRoom().isLocked())) {
+            case SOUTH: //controlli sui piani allagati? NO perchè non si può tornare indietro per forza
+                if (getCurrentRoom().getSouth() != null) {
+                    if (!getCurrentRoom().isLocked()) {
                     setCurrentRoom(getCurrentRoom().getSouth());
                     newroom = true;
+                    } else {
+                        lockroom = true;
+                    }
                 } else {
                     noroom = true;
                 }
@@ -586,9 +789,6 @@ public class SinkingShipGame extends GameDescription {
                 break;
             case STAB:
                 out = stabCommand();
-                break;
-            case HELP:
-                out = helpCommand();
                 break;
             case LOOK_AT:
                 out = lookAtCommand();
@@ -615,92 +815,16 @@ public class SinkingShipGame extends GameDescription {
                 out = "Non ho capito cosa devo fare! Prova con un altro comando.";
                 break;
         }
-        if (p.getCommand() == null) {
-        } else if (command == CommandType.PICK_UP) {
-            if (p.getObject() != null) {
-                if (p.getObject().isPickupable()) {
-                    getInventory().add(p.getObject());
-                    getCurrentRoom().getObjects().remove(p.getObject());
-                    out.println("Hai raccolto: " + p.getObject().getDescription());
-                } else {
-                    out.println("Non puoi raccogliere questo oggetto.");
-                }
-            } else {
-                out.println("Non c'è niente da raccogliere qui.");
-            }
-        } else if (command == CommandType.INSPECT) {
-            /*
-             * ATTENZIONE: quando un oggetto contenitore viene aperto, tutti gli oggetti
-             * contenuti
-             * vengongo inseriti nella stanza o nell'inventario a seconda di dove si trova
-             * l'oggetto contenitore.
-             * Potrebbe non esssere la soluzione ottimale.
-             */
-            if (p.getObject() == null && p.getInvObject() == null) {
-                out.println("Non c'è niente da aprire qui.");
-            } else {
-                if (p.getObject() != null) {
-                    if (p.getObject().isOpenable() && p.getObject().isOpen() == false) {
-                        if (p.getObject() instanceof AdvObjectContainer) {
-                            out.println("Hai aperto: " + p.getObject().getName());
-                            AdvObjectContainer c = (AdvObjectContainer) p.getObject();
-                            if (!c.getList().isEmpty()) {
-                                out.print(c.getName() + " contiene:");
-                                Iterator<AdvObject> it = c.getList().iterator();
-                                while (it.hasNext()) {
-                                    AdvObject next = it.next();
-                                    getCurrentRoom().getObjects().add(next);
-                                    out.print(" " + next.getName());
-                                    it.remove();
-                                }
-                                out.println();
-                            }
-                            p.getObject().setOpen(true);
-                        } else {
-                            out.println("Hai aperto: " + p.getObject().getName());
-                            p.getObject().setOpen(true);
-                        }
-                    } else {
-                        out.println("Non puoi aprire questo oggetto.");
-                    }
-                }
-                if (p.getInvObject() != null) {
-                    if (p.getInvObject().isOpenable() && p.getInvObject().isOpen() == false) {
-                        if (p.getInvObject() instanceof AdvObjectContainer) {
-                            AdvObjectContainer c = (AdvObjectContainer) p.getInvObject();
-                            if (!c.getList().isEmpty()) {
-                                out.print(c.getName() + " contiene:");
-                                Iterator<AdvObject> it = c.getList().iterator();
-                                while (it.hasNext()) {
-                                    AdvObject next = it.next();
-                                    getInventory().add(next);
-                                    out.print(" " + next.getName());
-                                    it.remove();
-                                }
-                                out.println();
-                            }
-                            p.getInvObject().setOpen(true);
-                        } else {
-                            p.getInvObject().setOpen(true);
-                        }
-                        out.println("Hai aperto nel tuo inventario: " + p.getInvObject().getName());
-                    } else {
-                        out.println("Non puoi aprire questo oggetto.");
-                    }
-                }
-            }
-        } else if (command == CommandType.PUSH) {
-            // ricerca oggetti pushabili
-
-        }
         if (noroom) {
-            out.println(
-                    "Non puoi andare in quella direzione... perchè non mi ascolti?");
+            out = "Non puoi andare in quella direzione... perchè non mi ascolti?";
         } else if (newroom) {
-            out.println(getCurrentRoom().getName());
-            out.println("================================================");
-            out.println(getCurrentRoom().getDescription());
+            out = " -------------------------------\n";
+            out += "| " + getCurrentRoom().getName() + "\n";
+            out += " -------------------------------\n";
+            out += getCurrentRoom().getDescription();
+        } else if (lockroom) {
+            out = "La porta è bloccata. Devi sbloccarla prima di poterla aprire.";
         }
+        return out;
     }
-
-}}
+}

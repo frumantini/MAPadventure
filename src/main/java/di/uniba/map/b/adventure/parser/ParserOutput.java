@@ -5,6 +5,7 @@ import di.uniba.map.b.adventure.type.Command;
 
 /**
  * Classe che gestisce l'ouput del parser
+ * @author fra
  */
 public class ParserOutput {
 
@@ -24,9 +25,9 @@ public class ParserOutput {
     private AdvObject invObject;
 
     /**
-     * Testo ausiliario.
+     * Password
      */
-    private String aux_text;
+    private String password;
 
     /**
      * Costruttore della classe.
@@ -43,13 +44,13 @@ public class ParserOutput {
      * @param command comando dell'utente
      * @param object oggetto
      * @param invObejct oggetto nell'inventario
-     * @param aux_text testo ausiliario
+     * @param password testo ausiliario
      */
-    public ParserOutput(Command command, AdvObject object, AdvObject invObejct, String aux_text){
+    public ParserOutput(Command command, AdvObject object, AdvObject invObejct, String password){
         this.command = command;
         this.object = object;
         this.invObject = invObejct;
-        this.aux_text = aux_text;
+        this.password = password;
     }
 
     /**
@@ -112,21 +113,20 @@ public class ParserOutput {
         this.invObject = invObject;
     }
 
-    
     /**
-     * Getter dell'attributo aux_text.
-     * @return testo ausiliario
+     * Getter dell'attributo password.
+     * @return password
      */
-    public String getAuxText(){
-        return aux_text;
+    public String getPasswordInput(){
+        return password;
     }
 
     /**
-     * Setter dell'attributo aux_text.
-     * @param aux_text testo ausiliario
+     * Setter dell'attributo password.
+     * @param password
      */
-    public void setAuxText(String aux_text){
-        this.aux_text = aux_text;
+    public void setPasswordInput(String password){
+        this.password = password;
     }
 }
 

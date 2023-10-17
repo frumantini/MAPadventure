@@ -8,6 +8,7 @@ import java.util.Set;
 
 /**
  * Classe per effettuare il parsing
+ * @author fra
  */
 public class Parser {
 
@@ -55,12 +56,11 @@ public class Parser {
     }
 
     /**
-     * per le PASSWORD
-     * Metodo che controlla se la stringa è una sottostringa racchiusa tra virgolette.
+     * Metodo di controllo per la password del telegrafo.
      * @param tokens Lista di stringhe da controllare
-     * @return Sottostringa, null altrimenti
+     * @return Sottostringa che contiene la password senza virgolette, null altrimenti
      */
-    private String checkForAuxText(List<String> tokens)
+    private String checkPassword(List<String> tokens)
     {
         for (String s: tokens)
         {
@@ -97,7 +97,7 @@ public class Parser {
                             ioinv = checkForObject(tokens.get(2), inventory);
                         }
                     }
-                    aux_text = checkForAuxText(tokens);
+                    aux_text = checkPassword(tokens);
                     if (io > -1 && ioinv > -1) {
                         return new ParserOutput(commands.get(ic), objects.get(io), inventory.get(ioinv));
                     } else if (io > -1 && aux_text != null) {

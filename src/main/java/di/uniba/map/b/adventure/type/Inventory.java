@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author pierpaolo
+ * @author fra
  */
 public class Inventory {
 

@@ -1,4 +1,4 @@
-Ti svegli all'interno di quella che sembra essere una cabina di una nave. Ti guardi intorno e noti un vecchio letto con un cuscino in conzioni simili e un tavolino con sopra una lanterna spenta. C'è una porta a Nord ma sembra essere chiusa a chiave.
+Ti guardi intorno e noti un vecchio letto a Nord e un tavolino con sopra una lanterna spenta. C'è una porta a Est ma sembra essere chiusa a chiave.
 Sei riuscito ad arrivare nel corridoio. Hai una porta a Nord e un'altra più lontana a Est. L'acqua comincia ad aumentare.
 La porta si spalanca e comincia a fuoriuscire acqua anche da lì. Sembra impossibile richiudere la porta, non ti resta che scappare.
 Arrivi in un grande atrio e chiudi la porta. Attorno a te ci sono una grande cassapanca e a Nord una rampa di scale che porta verso l'alto. Senti lo scrosciare dell'acqua sempre più forte, forse dovresti bloccare la porta con qualcosa...
@@ -19,8 +19,8 @@ Ti ritrovi all'interno di un bar di prima classe. Sul bancone sembra esserci... 
 Sei in quella che sembra essere una stanza di controllo. E' piena di oggetti buttati a terra, forse qualcuno aveva fretta di fuggire. A Ovest c'è una porta stagna, la cui manopola sembra arruginita.
 La manopola è arrugginita, Phi suggerisce: "Servirebbe qualcosa per allentare il meccanismo". A Nord, oltre la porta, c'è una stanza.
 Sei nella cabina di prima classe, tutto è perfettamente in ordine. Solo il tappeto non sembra nella nella essere sua posizione.
-Hai trovato la botola che porta alla stanza murata del piano inferiore. A Est c'è la botola.
 Sei nella sala comandi. Sulla scrivania ci sono schermi che trasmettono riprese delle telecamere sparse per la nave deserta e una tessera. "La tessera per il montacarichi" esclama Phi. Dalla finestrella che affaccia sulla stanza delle torture si vede che l'acqua ha già riempito tutto il secondo piano. A sud ci sono le scale per risalire.
 Sei all'esterno, vedi arrivare finalmente l'elicottero dei soccorsi. Breve è la sensazione di sollievo che ti percorre, perchè il pilota afferma di poter portare una sola persona alla volta. Il panico di travolge, vai prima tu o Phi?
 Finalmente sei in salvo, la stanchezza comincia a farsi sentire. Mentre le palpebre calando, vedi in lontananza la nave che affonda. Che strano, pensi tra te e te... non ho ancora capito perchè ci trovavamo lì... il buio di un sonno meritato ti pervade.
-All'improvviso senti un rumore di vetri rotti, ti giri e... l'oblò si è frantumato! Comincia a entrare acqua nella cabina! Devi scappare! C'è una porta a Nord.
+All'improvviso senti un rumore di vetri rotti, ti giri e... l'oblò si è frantumato! Comincia a entrare acqua nella cabina! Devi scappare! C'è una porta bloccata a Ovest. Forse la chiave che hai trovato può aprirla.
+Un vecchio letto con un cuscino in condizioni simili. Potrebbe esserci qualcosa sotto il cuscino...
