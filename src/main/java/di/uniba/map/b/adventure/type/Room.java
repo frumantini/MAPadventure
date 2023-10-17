@@ -2,11 +2,12 @@ package di.uniba.map.b.adventure.type;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.ImageIcon;
+import java.awt.Image;
 
 /**
  * Classe che rappresenta una stanza.
+ * @author fra
  */
 public class Room {
 
@@ -16,8 +17,6 @@ public class Room {
 
     private String description;
 
-    private ImageIcon scenario;
-
     private String look;
 
     private boolean visible = true;
@@ -25,6 +24,8 @@ public class Room {
     private boolean locked = false;
 
     private boolean dark = false;
+    
+    private boolean visited = false;
 
     private Room south = null;
 
@@ -33,6 +34,27 @@ public class Room {
     private Room east = null;
 
     private Room west = null;
+    /**
+     * background della stanza.
+     */
+    private Image backgroundImage;
+    /**
+     * background illuminato della stanza.
+     */
+    private Image backgroundEnlightedImage;
+    /**
+     * percorso del background della stanza.
+     */
+    private String backgroundImagePath;
+    /**
+     * percorso del background illuminato della stanza.
+     */
+    private String backgroundEnlightedImagePath;
+
+    /**
+     * private boolean che rappresenta se la stanza è stata visitata o meno.
+     */
+    
     
     private final List<AdvObject> objects=new ArrayList<>();
 
@@ -40,7 +62,7 @@ public class Room {
         this.id = id;
         this.name = name;
         this.description = description;
-        setScenario();
+        setBackgroundImage();
     }
 
     public int getId() {
@@ -87,6 +109,21 @@ public class Room {
         this.dark = dark;
     }
 
+    /**
+     * metodo che restituisce se la stanza è stata visitata o meno.
+     * @return visited
+     */
+    public boolean isVisited(){
+        return this.visited;
+    }
+    /**
+     * metodo che setta se la stanza è stata visitata o meno.
+     * @param visited
+     */
+    public void setVisited(final boolean visited){
+        this.visited = visited;
+    }
+
     public Room getSouth() {
         return south;
     }
@@ -123,6 +160,14 @@ public class Room {
         return objects;
     }
 
+    /**
+     * metodo che aggiunge un oggetto alla stanza.
+     * @param object
+     */
+    public void addObject(final AdvObjectContainer object){
+        this.objects.add(object);
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -154,6 +199,36 @@ public class Room {
 
     public void setLook(String look) {
         this.look = look;
+    }
+
+    private void setBackgroundImage() {
+        ImageIcon backgroundImageIcon = new ImageIcon("resources/"+this.id+".png");
+        backgroundImagePath= "resources/"+this.id+".png";
+        Image backgroundImage = backgroundImageIcon.getImage().getScaledInstance(backgroundImageIcon.getIconWidth(), backgroundImageIcon.getIconHeight(), Image.SCALE_SMOOTH);
+        this.backgroundImage = backgroundImage;
+    }
+
+    public void setBackgroundEnlightedImage(){
+        ImageIcon backgroundImageEnglightedIcon = new ImageIcon("resources/"+this.id+"d.png");
+        backgroundEnlightedImagePath= "resources/"+this.id+"d.png";
+        Image backgroundEnlightedImage = backgroundImageEnglightedIcon.getImage().getScaledInstance(backgroundImageEnglightedIcon.getIconWidth(), backgroundImageEnglightedIcon.getIconHeight(), Image.SCALE_SMOOTH);
+        this.backgroundEnlightedImage = backgroundEnlightedImage;
+    }
+
+    public Image getBackgroundEnlightedImage(){
+        return this.backgroundEnlightedImage;
+    }
+
+    public Image getBackgroundImage(){
+        return this.backgroundImage;
+    }
+
+    public String getBackgroundImagePath(){
+        return this.backgroundImagePath;
+    }
+
+    public String getBackgroundEnlightedImagePath(){
+        return this.backgroundEnlightedImagePath;
     }
 
 }

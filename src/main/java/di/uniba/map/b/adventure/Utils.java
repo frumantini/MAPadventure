@@ -11,6 +11,7 @@ import java.util.Set;
 
 /**
  * Classe che contiene metodi di utilità
+ * @author fra
  */
 public class Utils {
 

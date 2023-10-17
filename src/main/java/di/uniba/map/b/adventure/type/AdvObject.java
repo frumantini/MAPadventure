@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  *
- * @author pierpaolo
+ * @author fra
  */
 public class AdvObject {
 
@@ -25,7 +25,7 @@ public class AdvObject {
 
     private boolean pickupable = true;
 
-    private boolean usable = false;
+    private boolean usable = true;
 
     private boolean moveable = false;
 
@@ -80,9 +80,9 @@ public class AdvObject {
 
     public void setPickupable(boolean pickupable) {
         this.pickupable = pickupable;
-        if (pickupable) {
+        /*if (pickupable) {
             this.usable = true;
-        }
+        }*/
     }
 
     public boolean isUsable() {
@@ -125,7 +125,15 @@ public class AdvObject {
         this.unlockable = unlockable;
     }
 
-    public boolean isInvisible() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /*public boolean isInvisible() {
         return invisible;
     }
 
@@ -133,8 +141,10 @@ public class AdvObject {
         this.invisible = invisible;
         if (invisible) {
             this.pickupable = false;
+        } else {
+            this.pickupable = true;
         }
-    }
+    }*/
 
     public boolean isInspected() {
         return inspected;
@@ -142,9 +152,9 @@ public class AdvObject {
 
     public void setInspected(boolean inspected) {
         this.inspected = inspected;
-        if (inspected) {
+        /*if (inspected) {
             this.usable = true;
-        }
+        }*/
     }
 
     public boolean isPushed() {

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 /**
  * Classe che gestisce le descrizioni delle stanze.
+ * @author fra
  */
 public class RoomDescription {
     

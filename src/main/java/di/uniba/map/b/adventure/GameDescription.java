@@ -4,13 +4,15 @@ import di.uniba.map.b.adventure.parser.ParserOutput;
 import di.uniba.map.b.adventure.type.AdvObject;
 import di.uniba.map.b.adventure.type.Command;
 import di.uniba.map.b.adventure.type.Room;
-import java.io.PrintStream;
+import di.uniba.map.b.adventure.type.TimerListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 /**
  * Classe che descrive il gioco
+ * @author fra
  */
 public abstract class GameDescription {
 
@@ -34,7 +36,7 @@ public abstract class GameDescription {
      */
     private List<AdvObject> inventory = new ArrayList<>();
 
-    private Timer timer; //!!!!!!!!!!
+    private TimerListener timer; //!!!!!!!!!!
 
     /**
      * Stanza corrente
@@ -162,6 +164,8 @@ public abstract class GameDescription {
      * @return 
      */
     public abstract String nextMove(ParserOutput p);
+
+    public void setEngine(Engine engine) {}
 
 }
 

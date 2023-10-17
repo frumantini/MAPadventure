@@ -1,6 +1,6 @@
 Cabina terza classe
 Corridoio terza classe
-Porta
+Porta cabina B
 Atrio terza classe
 Atrio sbarrato
 Libreria
@@ -19,8 +19,8 @@ Bar
 Sala di controllo
 Porta arruginita
 Cabina prima classe
-Botola
 Sala comandi
 Esterno
 Elicottero
 Cabina allagata
+Letto della cabina

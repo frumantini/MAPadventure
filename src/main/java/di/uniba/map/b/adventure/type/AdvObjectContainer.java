@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author pierpaolo
+ * @author fra
  */
 public class AdvObjectContainer extends AdvObject {
 
