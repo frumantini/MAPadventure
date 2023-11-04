@@ -6,7 +6,7 @@ Atrio sbarrato
 Libreria
 Corridoio
 Stanza buia
-Phi
+Corridoio (phi)
 Cucina
 Infermieria
 Grande tavolo

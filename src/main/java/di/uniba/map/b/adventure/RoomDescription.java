@@ -3,7 +3,8 @@ package di.uniba.map.b.adventure;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-/**
+
+/** NEW
  * Classe che gestisce le descrizioni delle stanze.
  * @author fra
  */

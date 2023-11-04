@@ -4,7 +4,7 @@ import di.uniba.map.b.adventure.type.CommandGUIOutput;
 
 import java.io.IOException;
 
-public interface PluginableClient {
+public interface ClientInterface {
     /**
      * Metodo che si occupa di inviare un comando al server e di ricevere la risposta
      * @param command Comando da inviare al server
@@ -34,7 +34,5 @@ public interface PluginableClient {
      * @throws IOException Eccezione lanciata in caso di errore di I/O
      */
     void closeConnection() throws IOException;
-
-
 
     }

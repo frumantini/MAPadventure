@@ -68,7 +68,7 @@ public class TimerListener extends Thread {
      * Metodo che setta il delay del timer
      * @param delay int che indica il tempo di attesa tra un incremento e l'altro della progress bar
      */
-    public void setDelay(int delay) {
+    public void setLiquidDelay(int delay) {
         this.delay = delay;
     }
 
@@ -76,7 +76,7 @@ public class TimerListener extends Thread {
      * Metodo che restituisce il delay del timer
      * @return int che indica il tempo di attesa tra un incremento e l'altro della progress bar
      */
-    public int getDelay() {
+    public int getLiquidDelay() {
         return this.delay;
     }
 
@@ -84,7 +84,7 @@ public class TimerListener extends Thread {
      * Metodo che restituisce il progresso della progress bar
      * @return int che indica il progresso della progress bar
      */
-    public int getProgress() {
+    public int getLiquidProgress() {
         return this.progress;
     }
 
@@ -92,7 +92,7 @@ public class TimerListener extends Thread {
      * Metodo che setta il progresso della progress bar
      * @param progress int che indica il progresso della progress bar
      */
-    public void setProgress(int progress) {
+    public void setLiquidProgress(int progress) {
         this.progress = progress;
     }
 }

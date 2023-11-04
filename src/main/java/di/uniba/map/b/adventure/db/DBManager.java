@@ -16,7 +16,7 @@ public class DBManager {
     /**
      * Connessione al database.
      */
-    private Connection conn;
+    private Connection connection;
     /**
      * Costruttore della classe.
      * @throws SQLException
@@ -24,10 +24,9 @@ public class DBManager {
     public DBManager() throws SQLException {
         //connessione con oggetto Properties
         Properties dbprops = new Properties();
-        dbprops.setProperty("user", "user");
-        dbprops.setProperty("password", "1234");
-        conn = DriverManager.getConnection("jdbc:h2:./DB/DB",
-                dbprops);
+        dbprops.setProperty("user", "utente");
+        dbprops.setProperty("password", "1221");
+        connection = DriverManager.getConnection("jdbc:h2:./db/db", dbprops);
 
         initTables();
     }
@@ -36,7 +35,7 @@ public class DBManager {
      * @throws SQLException eccezione lanciata in caso di errore di connessione al database.
      */
     private void initTables() throws SQLException {
-        Statement createTable = conn.createStatement();
+        Statement createTable = connection.createStatement();
         String query = "CREATE TABLE IF NOT EXISTS GAMESTATUS ("
                 + "Username VARCHAR PRIMARY KEY,"
                 + "LastRoom INTEGER NOT NULL,"
@@ -54,7 +53,7 @@ public class DBManager {
      * @throws SQLException eccezione lanciata in caso di errore di connessione al database.
      */
     public GameStatus getGameStatus(final String username) throws SQLException {
-        Statement getStatement = conn.createStatement();
+        Statement getStatement = connection.createStatement();
         String lastRoomId="";
         String username1;
         String progress;
@@ -88,7 +87,7 @@ public class DBManager {
      */
     public int insertNewGameStatus(final GameStatus gamestatus) throws SQLException {
         int statusCode = 0;
-        Statement updateStatement = conn.createStatement();
+        Statement updateStatement = connection.createStatement();
         String query = "SELECT * FROM GameStatus WHERE username = '" + gamestatus.getUsername() + "'";
         ResultSet rs = updateStatement.executeQuery(query);
         if (rs.next()) {
@@ -106,10 +105,10 @@ public class DBManager {
      * Metodo che restituisce tutti gli stati di gioco salvati.
      * @return lista di stati di gioco.
      */
-    public List<GameStatus> getAllSavedGame() {
+    public List<GameStatus> getAllSaves() {
         List<GameStatus> savedGame = new ArrayList<GameStatus>();
         	try {
-                Statement getStatement = conn.createStatement();
+                Statement getStatement = connection.createStatement();
                 String lastRoomId = "";
                 String username1;
                 String progress;
