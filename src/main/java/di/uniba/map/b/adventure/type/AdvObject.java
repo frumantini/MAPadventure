@@ -35,8 +35,6 @@ public class AdvObject {
 
     private boolean unlockable = false;
 
-    private boolean invisible = false;
-
     private boolean inspected = false;
 
     private boolean pushed = false;
@@ -80,9 +78,6 @@ public class AdvObject {
 
     public void setPickupable(boolean pickupable) {
         this.pickupable = pickupable;
-        /*if (pickupable) {
-            this.usable = true;
-        }*/
     }
 
     public boolean isUsable() {
@@ -133,28 +128,12 @@ public class AdvObject {
         this.password = password;
     }
 
-    /*public boolean isInvisible() {
-        return invisible;
-    }
-
-    public void setInvisible(boolean invisible) {
-        this.invisible = invisible;
-        if (invisible) {
-            this.pickupable = false;
-        } else {
-            this.pickupable = true;
-        }
-    }*/
-
     public boolean isInspected() {
         return inspected;
     }
 
     public void setInspected(boolean inspected) {
         this.inspected = inspected;
-        /*if (inspected) {
-            this.usable = true;
-        }*/
     }
 
     public boolean isPushed() {

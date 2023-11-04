@@ -10,7 +10,7 @@ import di.uniba.map.b.adventure.type.AdvObject;
 import di.uniba.map.b.adventure.type.CommandGUIOutput;
 import di.uniba.map.b.adventure.type.CommandTypeGui;
 import di.uniba.map.b.adventure.type.CommandType;
-import di.uniba.map.b.adventure.socket.PluginableServer;
+import di.uniba.map.b.adventure.socket.ServerInterface;
 import di.uniba.map.b.adventure.type.Room;
 import di.uniba.map.b.adventure.type.TimerListener;
 
@@ -39,7 +39,7 @@ public class Engine {
     /**
      * Gestore del database.
      */
-    private DBManager dbManager;
+    private DBManager database;
 
     /**
      * Timer per il gioco.
@@ -54,7 +54,7 @@ public class Engine {
     /**
      * Server per il gioco.
      */
-    private PluginableServer server;
+    private ServerInterface server;
 
     /**
      * Username del giocatore.
@@ -65,11 +65,11 @@ public class Engine {
      * Costruttore della classe.
      * @param game gioco in esecuzione
      */
-    public Engine(GameDescription game) {
+    public Engine(GameDescription game) { // MODIFIED
         this.game = game;
         try {
             this.game.init();
-            this.game.setEngine(this);
+            this.game.setEngine(this); 
         } catch (Exception ex) {
             System.err.println(ex);
         }
@@ -82,7 +82,7 @@ public class Engine {
         timer = new TimerListener(this);
         this.game.setTimer(timer);
         try {
-            dbManager=new DBManager();
+            database=new DBManager();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -159,7 +159,7 @@ public class Engine {
     public void loadGame(String username) throws SQLException {
         GameStatus gameStatus = null;
         try {
-            gameStatus = dbManager.getGameStatus(username);
+            gameStatus = database.getGameStatus(username);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -171,8 +171,8 @@ public class Engine {
         Integer timerDelay = gameStatus.getDelay();
 
         this.setProgressValue(progressValue);
-        this.getTimer().setDelay(timerDelay);
-        this.getTimer().setProgress(progressValue);
+        this.getTimer().setLiquidDelay(timerDelay);
+        this.getTimer().setLiquidProgress(progressValue);
 
         game.setCurrentRoom(lastRoom.get(0));
         game.setInventory(inventory);
@@ -192,9 +192,9 @@ public class Engine {
             inventoryIds.add(o.getId());
         }
         GameStatus gameStatus = new GameStatus(username, game.getCurrentRoom().getId(), inventoryIds,
-                LocalDateTime.now(),this.getProgressValue(), this.getTimer().getDelay());
+                LocalDateTime.now(),this.getProgressValue(), this.getTimer().getLiquidDelay());
         try {
-            dbManager.insertNewGameStatus(gameStatus);
+            database.insertNewGameStatus(gameStatus);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -247,18 +247,6 @@ public class Engine {
                 case WEST:
                     commandGUIOutput = new CommandGUIOutput(CommandTypeGui.CHANGE_ROOM, response, game.getCurrentRoom().getBackgroundImagePath());
                     break;
-                /*case TURN_ON:
-                    if (game.getCurrentRoom().isDark()) {
-                        commandGUIOutput = new CommandGUIOutput(CommandTypeGui.TURN_ON,
-                                response, game.getCurrentRoom().getBackgroundEnlightedImagePath());
-                        game.getCurrentRoom().setDark(false);
-                    } else {
-                        commandGUIOutput = new CommandGUIOutput(CommandTypeGui.TURN_ON, response, game.getCurrentRoom().getBackgroundImagePath());
-                    }
-                    break;
-                case TURN_OFF:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.TURN_OFF, response, game.getCurrentRoom().getBackgroundImagePath());
-                    break;*/
                 case LOAD_GAME:
                     this.loadGame(this.getUsername());
                     commandGUIOutput = new CommandGUIOutput(CommandTypeGui.LOAD_GAME, "Caricamento partita", String.valueOf(game.getCurrentRoom().getId()));
@@ -269,12 +257,18 @@ public class Engine {
                 case END:
                     commandGUIOutput = new CommandGUIOutput(CommandTypeGui.END, response, null);
                     break;
+                case SINK:
+                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.SINK, response, null);
+                    break;
+                case STAB:
+                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.STAB, response, null);
+                    break;
                 case INCREMENT_PB_VALUE:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.INCREMENT_PB_VALUE, String.valueOf(this.getTimer().getDelay()), String.valueOf(this.getProgressValue()));
+                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.INCREMENT_PB_VALUE, String.valueOf(this.getTimer().getLiquidDelay()), String.valueOf(this.getProgressValue()));
                     break;
                 case SAVE:
                     this.saveGame(this.getUsername());
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.SAVE_GAME, "", null);
+                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.SAVE, "", null);
                     break;
                 case START_TIMER:
                     commandGUIOutput = new CommandGUIOutput(CommandTypeGui.START_TIMER, "", null);
@@ -311,7 +305,7 @@ public class Engine {
             commType = p.getCommand().getType();
             switch (commType) {
                 case GET_SAVES:
-                    resources = this.getSavedGames();
+                    resources = this.getSaves();
                     break;
                 default:
                     resources = null;
@@ -328,93 +322,20 @@ public class Engine {
      * @return output del comando
      * @throws SQLException eccezione
      */
-    public List<GameStatus> getSavedGames() throws SQLException {
+    public List<GameStatus> getSaves() throws SQLException {
 
-        return dbManager.getAllSavedGame();
+        return database.getAllSaves();
     }
     /**
      * Main del gioco che fa partire l'engine.
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        Engine engine;
+        //Engine engine;
         try {
-            engine = new Engine(new SinkingShipGame());
+            /*engine =*/ new Engine(new SinkingShipGame());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 }
-
-/*package di.uniba.map.b.adventure;
-
-import di.uniba.map.b.adventure.games.SinkingShipGame;
-import di.uniba.map.b.adventure.parser.Parser;
-import di.uniba.map.b.adventure.parser.ParserOutput;
-import di.uniba.map.b.adventure.type.CommandType;
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.Set;
-
-/**
- * ATTENZIONE: l'Engine è molto spartano, in realtà demanda la logica alla
- * classe che implementa GameDescription e si occupa di gestire I/O sul
- * terminale.
- * 
- * @author fra
- *
-public class Engine {
-
-    private final GameDescription game;
-
-    private Parser parser;
-
-    public Engine(GameDescription game) {
-        this.game = game;
-        try {
-            this.game.init();
-        } catch (Exception ex) {
-            System.err.println(ex);
-        }
-        try {
-            Set<String> stopwords = Utils.loadFileListInSet(new File("./resources/stopwords"));
-            parser = new Parser(stopwords);
-        } catch (IOException ex) {
-            System.err.println(ex);
-        }
-    }
-
-    public void execute() {
-        System.out.println("================================");
-        System.out.println("* Adventure v. 0.3 - 2022-2023 *");
-        System.out.println("================================");
-        System.out.println(game.getCurrentRoom().getName());
-        System.out.println();
-        System.out.println(game.getCurrentRoom().getDescription());
-        System.out.println();
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            String command = scanner.nextLine();
-            ParserOutput p = parser.parse(command, game.getCommands(), game.getCurrentRoom().getObjects(), game.getInventory());
-            if (p == null || p.getCommand() == null) {
-                System.out.println("Non capisco quello che mi vuoi dire.");
-            } else if (p.getCommand() != null && p.getCommand().getType() == CommandType.END) {
-                System.out.println("Addio!");
-                break;
-            } else {
-                game.nextMove(p);
-                System.out.println();
-            }
-        }
-    }
-
-    /**
-     * @param args the command line arguments
-     *
-    public static void main(String[] args) {
-        Engine engine = new Engine(new SinkingShipGame());
-        engine.execute();
-    }
-
-}*/

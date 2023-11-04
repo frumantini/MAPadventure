@@ -14,7 +14,7 @@ import java.sql.SQLException;
 /**
  * Classe che si occupa di gestire la comunicazione del server con il client
  */
-public class Server implements PluginableServer {
+public class Server implements ServerInterface {
 
     /**
      * Engine che rappresenta il motore di gioco
@@ -46,7 +46,7 @@ public class Server implements PluginableServer {
     public Server(Engine engine) throws IOException {
         this.engine = engine;
 
-        serverSocket = new ServerSocket(7777);
+        serverSocket = new ServerSocket(5000);
 
         clientSocket=serverSocket.accept();
         System.out.println("Client connesso");

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Interfaccia che rappresenta un server che può essere esteso con dei plugin
  */
-public interface PluginableServer {
+public interface ServerInterface {
     /**
      * Metodo che si occupa di inviare un comando al client
      * @param commandGUIOutput Comando da inviare al client

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Classe che si occupa di gestire la comunicazione del client con il server
  */
-public class Client implements PluginableClient{
+public class Client implements ClientInterface{
 
     /**
      * Socket per la comunicazione
@@ -35,7 +35,7 @@ public class Client implements PluginableClient{
      */
     public Client() throws IOException {
 
-        socket = new Socket("localhost", 7777);
+        socket = new Socket("localhost", 5000);
         objectReader = new ObjectInputStream(socket.getInputStream());
         bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
@@ -60,9 +60,7 @@ public class Client implements PluginableClient{
         if(response instanceof CommandGUIOutput){
             commandGUIOutput=(CommandGUIOutput) response;
             return commandGUIOutput;
-        }
-        else
-        {
+        } else {
             return new CommandGUIOutput(CommandTypeGui.UNKNOWN);
         }
     }

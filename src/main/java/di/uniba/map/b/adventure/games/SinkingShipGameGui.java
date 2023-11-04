@@ -2,7 +2,7 @@ package di.uniba.map.b.adventure.games;
 
 import di.uniba.map.b.adventure.db.GameStatus;
 import di.uniba.map.b.adventure.socket.Client;
-import di.uniba.map.b.adventure.socket.PluginableClient;
+import di.uniba.map.b.adventure.socket.ClientInterface;
 import di.uniba.map.b.adventure.type.CommandGUIOutput;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -54,6 +54,12 @@ public class SinkingShipGameGui extends JFrame {
      * Boolean per la gestione della chiusura del gioco
      */
     private boolean shouldCloseGame = false;
+
+    /**
+     * JPanel per la gestione degli oggetti
+     */
+    private JPanel mapPanel = null;
+
     /**
      * JProgressBar per la gestione del tempo
      */
@@ -74,7 +80,7 @@ public class SinkingShipGameGui extends JFrame {
     /**
      * Client per la gestione della connessione
      */
-    private static PluginableClient client;
+    private static ClientInterface client;
 
     /**
      * getter per la liquidProgress
@@ -97,7 +103,6 @@ public class SinkingShipGameGui extends JFrame {
         initStartPanel();
         setVisible(true);
     }
-
 
     /**
      * Inizializza il pannello principale
@@ -244,7 +249,7 @@ public class SinkingShipGameGui extends JFrame {
             }
         };
         startButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
-        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+        startButton.setFont(new Font("Arial", Font.BOLD, 16)); //SERVE?
         startButton.addActionListener(e -> {
             try {
                 startGame(); // Carica il gioco
@@ -264,7 +269,7 @@ public class SinkingShipGameGui extends JFrame {
             }
         };
         loadGameButton.setBounds(buttonX, buttonY2, buttonWidth, buttonHeight);
-        loadGameButton.setFont(new Font("Arial", Font.BOLD, 16));
+        loadGameButton.setFont(new Font("Arial", Font.BOLD, 16)); //SERVE?
         loadGameButton.addActionListener(e -> {
             try {
                 loadGame(); // Avvia il gioco
@@ -301,20 +306,47 @@ public class SinkingShipGameGui extends JFrame {
         sidePanel.setPreferredSize(new Dimension(250, 0));
         sidePanel.setLayout(new BorderLayout()); // Modifica il layout in BorderLayout
         initProgressBar(sidePanel); // Inizializza la barra di avanzamento
+        //initObjectImages(sidePanel, objId);
         mainPanel.add(sidePanel, BorderLayout.WEST);
     }
+
+    /*private void initObjectImages(JPanel sidePanel, int objId) throws IOException, ClassNotFoundException{
+        //commandGUIOutput response;
+        
+        // Crea un pannello verticale per le immagini degli oggetti
+        JPanel imageContainer = new JPanel();
+        imageContainer.setLayout(new BoxLayout(imageContainer, BoxLayout.Y_AXIS));
+
+        // Aggiungi tre pannelli quadrati per le immagini degli oggetti
+        for (int i = 0; i < 3; i++) {
+            JPanel objPanel = new JPanel();
+            objPanel.setPreferredSize(new Dimension(70, 70));
+            objPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Opzionale: aggiunge un bordo
+
+            // Aggiungi l'oggetto immagine al pannello objPanel (vedi il codice precedente)
+            // Esempio:
+            ImageIcon objImageIcon = new ImageIcon("resources/" +objId+".png");
+            JLabel objImageLabel = new JLabel(objImageIcon);
+            objPanel.add(objImageLabel);
+
+            imageContainer.add(objPanel);
+        }
+
+        // Aggiungi il pannello della ProgressBar a sinistra e il pannello delle immagini a destra
+        sidePanel.add(imageContainer, BorderLayout.EAST);
+    }*/
 
     private void initProgressBar(JPanel sidePanel) throws IOException, ClassNotFoundException {
         CommandGUIOutput response;
         liquidProgress = new JProgressBar(JProgressBar.VERTICAL, 0, 100);
         liquidProgress.setStringPainted(true);
         liquidProgress.setPreferredSize(new Dimension(50, 100));
-        liquidProgress.setForeground(new Color(173, 216, 230)); // Celeste chiaro
+        liquidProgress.setForeground(new Color(153, 205, 255)); // Celeste chiaro
         sidePanel.add(liquidProgress, BorderLayout.WEST);
         
         // Avvio del timer
         client.executeCommand("STARTTIMER");
-        progressBarListener = new ProgressBarListener(3000);
+        progressBarListener = new ProgressBarListener(300000);
         progressBarListener.start();
     }
     
@@ -323,62 +355,18 @@ public class SinkingShipGameGui extends JFrame {
         int red = color.getRed();
         int green = color.getGreen();
         int blue = color.getBlue();
-    
-        if (blue < 255) {
-            // Aumenta gradualmente il valore del blu
-            liquidProgress.setForeground(new Color(red, green, blue + 1));
+        
+        if (red > 0) {
+            // Decrementa gradualmente il valore del rosso e del verde
+            liquidProgress.setForeground(new Color(red - 3, green -2, blue));
+        } else if (red == 0 && green > 0) {
+            // Decrementa gradualmente il valore del verde e del blu
+            liquidProgress.setForeground(new Color(red, green-2, blue -3));
+        } else if (red == 0 && green == 0) {
+            // Decrementa gradualmente il valore del blu
+            liquidProgress.setForeground(new Color(red, green, blue - 3));
         }
     }
-    
-    /**
-     * Inizializza la barra di avanzamento
-     *//*
-     private void initProgressBar(JPanel sidePanel)
-            throws IOException, ClassNotFoundException {
-        CommandGUIOutput response;
-        liquidProgress = new JProgressBar(JProgressBar.VERTICAL, 0, 100);
-        liquidProgress.setStringPainted(true);
-        liquidProgress.setPreferredSize(new Dimension(50, 100));
-        liquidProgress.setForeground(new Color(0, 0, 255)); 
-        sidePanel.add(liquidProgress, BorderLayout.WEST);
-        // Avvio del timer
-        client.executeCommand("STARTTIMER");
-        progressBarListener = new ProgressBarListener(3000);
-        progressBarListener.start();
-    }
-    
-    /**
-     * cambia il colore della progressBar (da verde a rosso)
-     *//*
-     public void changeProgressBarColor(){
-        Color color = liquidProgress.getForeground();
-        int red = color.getRed();
-        int green = color.getGreen();
-        if(red < 255)
-            liquidProgress.setForeground(new Color(red + 5, 200, 0));
-        else
-            liquidProgress.setForeground(new Color(red, green - 3, 0));
-    } */
-    /**
- * Cambia il colore della progressBar da celeste chiaro a blu progressivamente.
- 
-public void changeProgressBarColor() {
-    Color color = liquidProgress.getForeground();
-    int red = color.getRed();
-    int green = color.getGreen();
-    int blue = color.getBlue();
-
-    if (blue > 0) {
-        // Incrementa il valore del canale blu per ottenere un colore più blu
-        liquidProgress.setForeground(new Color(red, green, blue - 10));
-    } else if (green < 255) {
-        // Incrementa il valore del canale verde se il blu ha raggiunto il massimo
-        liquidProgress.setForeground(new Color(red, green + 5, blue));
-    } else if (red < 255) {
-        // Incrementa il valore del canale rosso se il blu e il verde hanno raggiunto il massimo
-        liquidProgress.setForeground(new Color(red + 5, green, blue));
-    }
-}*/
     
     /**
      * Aggiorna il valore della barra di avanzamento
@@ -389,7 +377,7 @@ public void changeProgressBarColor() {
         if (progress % 25 == 0 && progress != 100 && progress != 0) {
             this.appendAreaText("Il livello dell'acqua sta salendo!\n");
         } else if (progress == 100) {
-            this.die("");
+            this.endCommand("");
         }
         this.changeProgressBarColor();
     }
@@ -523,11 +511,22 @@ public void changeProgressBarColor() {
      */
     private void initInputArea(){
         // Aggiungi la JTextField al pannello di sfondo
-        textField = new JTextField();
+        
+        Color background = new Color(0, 20, 70, 150); // Colore di sfondo con opacità ridotta (valori RGB: 0, 0, 0, opacità)
+        textField = new JTextField() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setColor(background);
+                g2.fillRect(0, 0, getWidth(), getHeight()); // Riempie l'area con il colore di sfondo
+                super.paintComponent(g2);
+                g2.dispose();
+            }
+        };
         textField.setOpaque(false); // Rendi lo sfondo trasparente
         textField.setPreferredSize(new Dimension(getWidth()-150, 40));
-        textField.setForeground(Color.CYAN); // Colore del testo
-        textField.setFont(new Font("Consolas", Font.BOLD, 16)); // Font del testo
+        textField.setForeground(Color.WHITE); // Colore del testo
+        textField.setFont(new Font("Consolas", Font.PLAIN, 18)); // Font del testo
         backgroundPanel.add(textField, BorderLayout.SOUTH);
 
         textField.addActionListener(e -> {
@@ -573,27 +572,37 @@ public void changeProgressBarColor() {
             throws IOException, ClassNotFoundException {
         switch (command.getType())
         {
+            case LOAD_GAME:
+                startLoadedGame(Integer.parseInt(command.getResource()));
+                break;
             case CHANGE_ROOM:
                 this.setBackgroundImageFromPath(command.getResource());
                 appendAreaText(command.getText());
                 break;
+            case MAP:
+                showMap();
+                break;
             case DISPLAY_TEXT:
                 appendAreaText(command.getText());
                 break;
-            case LOAD_GAME:
-                startLoadedGame( Integer.parseInt(command.getResource()));
-                break;
             case END:
-                die(command.getText());
+                endCommand(command.getText());
+                break;
+            case SINK:
+                sinkCommand(command.getText());
+                break;
+            case STAB:
+                stabCommand(command.getText());
                 break;
             case HELP:
-                appendAreaText(command.getText());
+                appendAreaText(helpCommand());
                 break;
             case INCREMENT_PB_VALUE:
                 incrementProgressBarValue(Integer.parseInt(command.getResource()));
                 break;
         }
     }
+
 
     /**
      * scrve il testo nella text area
@@ -607,7 +616,7 @@ public void changeProgressBarColor() {
      * stampa a video il messaggio di help
      * @return messaggio di help
      */
-    public String printHelp(){
+    public String helpCommand(){
         return ("In questo goco devi cercare di scappare dalla nave in cui ti risvegli prima che essa affondi e ti porti giù con sè.\n" +
                 "Per portare a termire la tua missione devi essere in grado di osservare attentamente i dintorni ed essere il più rapido possibile,"+
                 "cercando di non tralasciare nulla indietro...\n" +
@@ -623,12 +632,12 @@ public void changeProgressBarColor() {
                 "\n" +
                 "Comandi fondamentali per interagire con gli oggetti presenti:\n" +
                 "\n" +
-                "- PRENDI oggetto\n" +
-                "- USA oggetto\n" +
-                "- SPOSTA oggetto\n" +
-                "- ISPEZIONA oggetto\n" +
-                "- PREMI oggetto\n" +
-                "- SBLOCCA oggetto \"password\"\n" +
+                "- PRENDI oggetto: raccoglie un oggetto presente nella stanza e lo aggiunge all’inventario\n" +
+                "- USA oggetto: utilizza un oggetto\n" +
+                "- SPOSTA oggetto: sposta un oggetto\n" +
+                "- ISPEZIONA oggetto: ispeziona l'interno di un oggetto nell'inventario\n" +
+                "- PREMI oggetto: preme un oggetto\n" +
+                "- SBLOCCA oggetto \"password\": sblocca un oggetto attraverso una password\n" +
                 "\n" +
                 "Altri comandi che potrebbero esserti d'aiuto:\n" +
                 "\n" +
@@ -699,18 +708,76 @@ public void changeProgressBarColor() {
         scrollPane.repaint();
     }
 
+    private void showMap() {
+        mapPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon backgroundImageIcon = new ImageIcon("resources/map.png");
+                Image backgroundImage = backgroundImageIcon.getImage();
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        add(mapPanel);
+    }
     /**
      * implementazione fine gioco
      * @param command comando da eseguire
      */
-    public void die(String command) throws IOException, ClassNotFoundException {
+    public void endCommand(String command) throws IOException, ClassNotFoundException {
         textField.setEditable(false);
         progressBarListener.stopListener();
-        appendAreaText(command + "Le onde ti sommergono, non c'è più nulla che tu possa fare. \n\nGAME OVER");
+        appendAreaText(command + "Decidi di arrenderti e di morire qui. Distrutto ti stendi e aspetti che il mare ti sommerga.\\n" + //
+                "Le onde ti sommergono, non c'è più nulla che tu possa fare. \n\nGAME OVER");
+        isDead = true;
+        client.executeCommand("STOPTIMER");
+    }
+
+    public void sinkCommand(String command) throws IOException, ClassNotFoundException {
+        textField.setEditable(false);
+        progressBarListener.stopListener();
+        appendAreaText(command + "All'improvviso, non si sa da dove si sente: ''Tentativo di fuga rilevato. Attivazione protocollo di autodistruzione, tutte le porte verranno aperte''."
+        + "Prima di realizzare cosa sia successo, le onde ti travolgono, affondando completamente la barca.\n\nGAME OVER");
+        isDead = true;
+        client.executeCommand("STOPTIMER");
+    }
+
+    public void stabCommand(String command) throws IOException, ClassNotFoundException {
+        textField.setEditable(false);
+        progressBarListener.stopListener();
+        appendAreaText("''Non ce la faccio ad aspettare qui ancora!'' urli e ti appresti a correre verso l'elicottero. All'improvviso senti un dolore atroce, "
+        + "Phi ti ha infilzato con il coltello da cucina. ''Mi dispiace, ma neanche io voglio aspettare'' ti dice e sale sull'elicottero. ''Ma avevi detto che il coltello non ci serviva...'', bisbigli più a te stesso che a lei. Muori dissanguato...sei incredibile...\n\nGAME OVER");
         isDead = true;
         client.executeCommand("STOPTIMER");
     }
     
+    public class MapWindow extends JDialog {
+
+        public MapWindow(JFrame parent, String mapImagePath) {
+            super(parent, "Mappa", ModalityType.MODELESS);
+
+            // Carica l'immagine di sfondo della mappa
+            ImageIcon backgroundImageIcon = new ImageIcon(mapImagePath);
+
+             mapPanel = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    ImageIcon backgroundImageIcon = new ImageIcon("resources/map.png");
+                    Image backgroundImage = backgroundImageIcon.getImage();
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                }
+            };
+
+            setLayout(new BorderLayout());
+            add(mapPanel, BorderLayout.CENTER);
+
+            // Impostazioni della finestra
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Chiude solo questa finestra
+            setSize(800, 600); // Imposta le dimensioni iniziali
+            setLocationRelativeTo(parent); // Posiziona la finestra al centro del frame principale
+        }
+    }
 
     /**
      * Pannello che mostra le partite salvate
@@ -740,7 +807,7 @@ public void changeProgressBarColor() {
                     }
                 };
                 rowLabel.setOpaque(false);
-                rowLabel.setFont(new Font("Consolas", Font.BOLD, 16));
+                rowLabel.setFont(new Font("Consolas", Font.PLAIN, 18));
                 rowLabel.setForeground(Color.WHITE);
                 panel.add(rowLabel);
 
@@ -915,6 +982,5 @@ public void changeProgressBarColor() {
     public static void main(String[] args) {
         SinkingShipGameGui gui = new SinkingShipGameGui();
     }
-
 }
 
