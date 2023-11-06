@@ -1,7 +1,7 @@
 package di.uniba.map.b.adventure.socket;
 
 import di.uniba.map.b.adventure.db.GameStatus;
-import di.uniba.map.b.adventure.type.CommandGUIOutput;
+import di.uniba.map.b.adventure.type.CommandOutputGui;
 import di.uniba.map.b.adventure.type.CommandTypeGui;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Classe che si occupa di gestire la comunicazione del client con il server
  */
-public class Client implements ClientInterface{
+public class Client implements ClientInterface {
 
     /**
      * Socket per la comunicazione
@@ -47,9 +47,9 @@ public class Client implements ClientInterface{
      * @throws IOException Eccezione lanciata in caso di errore di I/O
      * @throws ClassNotFoundException Eccezione lanciata in caso di classe non trovata
      */
-    public CommandGUIOutput executeCommand(String command) throws IOException, ClassNotFoundException {
+    public CommandOutputGui executeCommand(String command) throws IOException, ClassNotFoundException {
 
-        CommandGUIOutput commandGUIOutput = null;
+        CommandOutputGui commandGUIOutput = null;
         Object resource = null;
         Object response = null;
 
@@ -57,11 +57,11 @@ public class Client implements ClientInterface{
 
         out.println(command);
         response=objectReader.readObject();
-        if(response instanceof CommandGUIOutput){
-            commandGUIOutput=(CommandGUIOutput) response;
+        if(response instanceof CommandOutputGui){
+            commandGUIOutput=(CommandOutputGui) response;
             return commandGUIOutput;
         } else {
-            return new CommandGUIOutput(CommandTypeGui.UNKNOWN);
+            return new CommandOutputGui(CommandTypeGui.UNKNOWN);
         }
     }
 

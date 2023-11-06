@@ -4,7 +4,7 @@ import java.io.Serializable;
 /**
  * Classe che rappresenta l'output di un comando.
  */
-public class CommandGUIOutput implements Serializable {
+public class CommandOutputGui implements Serializable {
     /**
      * Enumerazione che rappresenta i tipi di output di un comando.
      */
@@ -23,7 +23,7 @@ public class CommandGUIOutput implements Serializable {
      * @param text testo dell'output
      * @param resource percorso della risorsa da visualizzare
      */
-    public CommandGUIOutput(final CommandTypeGui type,final String text,final String resource) {
+    public CommandOutputGui(final CommandTypeGui type,final String text,final String resource) {
         this.type = type;
         this.pathResource = resource;
         this.text = text;
@@ -33,7 +33,7 @@ public class CommandGUIOutput implements Serializable {
      * @param type tipo di output
      * @param text testo dell'output
      */
-    public CommandGUIOutput(final CommandTypeGui type,final String text) {
+    public CommandOutputGui(final CommandTypeGui type,final String text) {
         this.type = type;
         this.text = text;
     }
@@ -41,7 +41,7 @@ public class CommandGUIOutput implements Serializable {
      * Costruttore della classe.
      * @param type tipo di output
      */
-    public CommandGUIOutput(final CommandTypeGui type) {
+    public CommandOutputGui(final CommandTypeGui type) {
         this.type = type;
     }
     /**

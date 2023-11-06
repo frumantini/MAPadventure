@@ -1,6 +1,6 @@
 package di.uniba.map.b.adventure.socket;
 
-import di.uniba.map.b.adventure.type.CommandGUIOutput;
+import di.uniba.map.b.adventure.type.CommandOutputGui;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ public interface ClientInterface {
      * @throws IOException Eccezione lanciata in caso di errore di I/O
      * @throws ClassNotFoundException Eccezione lanciata in caso di classe non trovata
      */
-    CommandGUIOutput executeCommand(String command) throws IOException, ClassNotFoundException;
+    CommandOutputGui executeCommand(String command) throws IOException, ClassNotFoundException;
     /**
      * Metodo che si occupa di inviare un comando di richiesta di risorse al server e di ricevere la risposta
      * @param command Comando da inviare al server
@@ -31,7 +31,7 @@ public interface ClientInterface {
 
     /**
      * Chiudi la connessione con il server
-     * @throws IOException Eccezione lanciata in caso di errore di I/O
+     * @throws IOException Eccezione lanciata in caso di errore di I/O quando si chiude il socket
      */
     void closeConnection() throws IOException;
 

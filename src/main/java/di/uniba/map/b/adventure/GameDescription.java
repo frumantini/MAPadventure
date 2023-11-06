@@ -36,7 +36,7 @@ public abstract class GameDescription {
      */
     private List<AdvObject> inventory = new ArrayList<>();
 
-    private TimerListener timer; //!!!!!!!!!! NEW
+    private TimerListener timer;
 
     /**
      * Stanza corrente

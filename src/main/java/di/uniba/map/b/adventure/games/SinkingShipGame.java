@@ -74,7 +74,7 @@ public class SinkingShipGame extends GameDescription {
         end.setAlias(new String[] { "end", "fine", "esci", "muori", "ammazzati", "ucciditi", "suicidati", "exit" });
         getCommands().add(end);
         Command sink = new Command(CommandType.SINK, "sink");
-        sink.setAlias(new String[] { "fuga" });
+        sink.setAlias(new String[] { "fuga"});
         getCommands().add(sink);
         Command stab = new Command(CommandType.STAB, "io");
         stab.setAlias(new String[] { "io", "me" });
@@ -88,8 +88,6 @@ public class SinkingShipGame extends GameDescription {
         Command look = new Command(CommandType.LOOK_AT, "osserva");
         look.setAlias(new String[] { "guarda", "vedi", "trova", "cerca", "descrivi" });
         getCommands().add(look);
-        Command map = new Command(CommandType.MAP, "mappa");
-        map.setAlias(new String[] { "MAPPA", "mappa", "usa mappa" });
 
         Command pickup = new Command(CommandType.PICK_UP, "raccogli");
         pickup.setAlias(new String[] { "prendi" });
@@ -119,6 +117,9 @@ public class SinkingShipGame extends GameDescription {
         Command getSaves = new Command(CommandType.GET_SAVES, "GETSAVES");
         getSaves.setAlias(new String[] { "GETSAVES", "getsaves" });
         getCommands().add(getSaves);
+        Command load = new Command(CommandType.LOAD_GAME, "LOADGAME");
+        load.setAlias(new String[]{"LOADGAME", "loadgame"});
+        getCommands().add(load);
         Command startTimer = new Command(CommandType.START_TIMER, "STARTTIMER");
         startTimer.setAlias(new String[] { "STARTTIMER", "starttimer" });
         getCommands().add(startTimer);
@@ -151,7 +152,7 @@ public class SinkingShipGame extends GameDescription {
             Room hallway2 = new Room(5, info.getName(6), info.getDescription(6));
             hallway2.setLocked(true);
             Room darkRoom = new Room(61, info.getName(7), info.getDescription(7));
-            darkRoom.setDark(true); //non credo che serva.SI SERVE
+            darkRoom.setDark(true);
             Room phi = new Room(18, info.getName(8), info.getDescription(8));
             phi.setLocked(true);
             Room kitchen = new Room(62, info.getName(9), info.getDescription(9));
@@ -270,13 +271,13 @@ public class SinkingShipGame extends GameDescription {
             oil.setAlias(new String[] { "olio lubrificante", "olio", "lubrificante" });
             tortureRoom.getObjects().add(oil);
 
-            AdvObject map = new AdvObject(12, "Mappa", "Una mappa della nave."); // MOSTRABILE???
-            map.setAlias(new String[] { "mappa", "carta geografica" });
+            AdvObject note = new AdvObject(12, "Pezzo di carta", "Un bigliettino logoro. Sembra esserci scritto qualcosa... 'aguf'. \"E' 'fuga' al contrario, servirà a qualcosa?\" chiede Phi");
+            note.setAlias(new String[] { "biglietto", "Biglietto", "pezzo di carta" });
 
             AdvObjectContainer book = new AdvObjectContainer(7, "Libro", "Un libro di nautica. Sembra esserci qualcosa dentro.");
             book.setAlias(new String[] { "libro", "volume", "libro di nautica", "volume di nautica"});
             book.setInspectable(true);
-            book.add(map);
+            book.add(note);
             study.getObjects().add(book);
 
             AdvObject button = new AdvObject(8, "Pulsante", "Un pulsante verde. Potrebbe sbloccare qualcosa.");
@@ -288,7 +289,7 @@ public class SinkingShipGame extends GameDescription {
 
             AdvObject telegraph = new AdvObject(9, "Telegrafo",
                     "Un telegrafo bloccato da una password di 4 lettere. 4 lettere... dove le avevi viste?");
-            telegraph.setAlias(new String[] { "telegrafo", "telegrafo bloccato", "telegrafo con password" });
+            telegraph.setAlias(new String[] { "telegrafo" });
             telegraph.setPickupable(false);
             telegraph.setUnlockable(true);
             telegraph.setPassword("aguf");
@@ -496,7 +497,6 @@ public class SinkingShipGame extends GameDescription {
                             getInventory().remove(p.getObject());
                         }
                         break;
-                    //aggiungi mappa da non rimuovere dopo l'uso
                     default:
                         out = "Non puoi usare questo oggetto in questa stanza.";
                         break;
@@ -543,11 +543,10 @@ public class SinkingShipGame extends GameDescription {
                 if (p.getInvObject() instanceof AdvObjectContainer) {
                     AdvObjectContainer c = (AdvObjectContainer) p.getInvObject();
                     if (!c.getList().isEmpty()) {
-                        out = "Sulla prima pagina sembra esserci scritto qualcosa... 'aguf'. ''E' 'fuga' al contrario, servirà a qualcosa?'' chiede Phi,"
-                                + "aggiungendo ''Forse dovremmo inserire il libro da qualche parte''."
-                                + "\nContiene:" + "\n"+ "Una mappa";
-                        AdvObject map = c.getList().get(0);  
-                        getInventory().add(map);
+                        out = "''Forse dovremmo inserire il libro da qualche parte'', commenta Phi."
+                                + "\nContiene:" + "\n"+ "Un biglietto, controlla il tuo inventario per vedere se c'è scritto qualcosa.";
+                        AdvObject note = c.getList().get(0);  
+                        getInventory().add(note);
                         c.getList().clear();
                         p.getInvObject().setInspected(true);
                     }
@@ -589,7 +588,6 @@ public class SinkingShipGame extends GameDescription {
                     out = "Hai spostato il tappeto. Hai trovato la botola che porta alla stanza murata del piano inferiore. A Est c'è la botola.";
                     getCurrentRoom().getObjects().remove(p.getObject());
                     getCurrentRoom().setLocked(false);
-                    //getRooms().get(42).setLocked(true);
                 }
             } else {
                 out = "Non puoi spostare questo oggetto.";
@@ -627,45 +625,10 @@ public class SinkingShipGame extends GameDescription {
         return out;
     }
     
-    /*forse con engine non si può
-    public class GameOverException extends Exception {
-        public GameOverException(String message) {
-            super(message);
-        }
-    }
-    
-    public String unlockCommand(ParserOutput p) {
-        String out = "";
-        if (p.getObject() != null) {
-            if (p.getObject().isUnlockable()) {
-                if ("fuga".equals(p.getPasswordInput())) {
-                    try {
-                        throw new GameOverException("Hai inserito la password 'fuga'. Il gioco è finito!");
-                        //String out = "All'improvviso, non si sa da dove si sente: ''Tentativo di fuga rilevato. Attivazione protocollo di autodistruzione, tutte le porte verranno aperte''. Prima di realizzare cosa sia successo, le onde ti travolgono, affondando completamente la barca.\n";
-                        //return out;
-                        //engine.endGame();
-                    } catch (GameOverException e) {
-                        out = e.getMessage();
-                    }
-                } else if (p.getObject().getPassword().equals(p.getPasswordInput())) {
-                    out = "Hai sbloccato il telegrafo. E' stata mandata una richiesta di soccorso!";
-                } else {
-                    out = "Password errata.";
-                    //out = sinkCommand(); ????
-                }
-            } else {
-                out = "Non puoi sbloccare questo oggetto.";
-            }
-        } else {
-            out = "Non c'è niente da sbloccare qui.";
-        }
-        return out;
-    }*/
     /**
      * Metodo per gestire le mosse del giocatore.
-     * 
-     * @param p
-     * @return
+     * @param p ParserOutput
+     * @return out
      */
     @Override
     public String nextMove(ParserOutput p) {
@@ -681,13 +644,9 @@ public class SinkingShipGame extends GameDescription {
                         setCurrentRoom(getCurrentRoom().getNorth());
                         newroom = true;
                         if (getCurrentRoom().getId()== 2 )
-                            getTimer().setLiquidDelay(5000);
+                            getTimer().setLiquidDelay(4000);
                         else if (getCurrentRoom().getId()== 5 )
                             playSound("resources/pots.wav");
-                    /*} else if (getCurrentRoom().getId() == 41){
-                        getRooms().get(41).setLocked(false);
-                        setCurrentRoom(getCurrentRoom().getNorth());
-                        newroom = true; */
                     } else {
                         lockroom = true;
                     }
@@ -701,17 +660,6 @@ public class SinkingShipGame extends GameDescription {
                     setCurrentRoom(getCurrentRoom().getEast());
                     newroom = true;
                     } else {
-                        /*if (getCurrentRoom().getId() == 16) {
-                            setCurrentRoom(getCurrentRoom().getEast());
-                            String out = "Finalmente sei in salvo, la stanchezza comincia a farsi sentire. Mentre le palpebre calando, vedi in lontananza la nave che affonda."
-                            + "Che strano, pensi tra te e te... non ho ancora capito perchè ci trovavamo lì... il buio di un sonno meritato ti pervade.\n\n\n\n"
-                            + "CE L'HAI FATTA! HAI VINTO!";
-                             engine.endGame();
-                        newroom = true;
-                        } else {
-                            //checkLock(command);
-                            lockroom = true;
-                        }*/ //come risolvo sta cosa boh, win non cambia stanza(tengo questa ora), east non stampa
                         lockroom = true;
                     }
                 } else {
@@ -739,7 +687,7 @@ public class SinkingShipGame extends GameDescription {
                     noroom = true;
                 }
                 break;
-            case SOUTH: //controlli sui piani allagati? NO perchè non si può tornare indietro per forza
+            case SOUTH:
                 if (getCurrentRoom().getSouth() != null) {
                     if (!getCurrentRoom().isLocked()) {
                     setCurrentRoom(getCurrentRoom().getSouth());
