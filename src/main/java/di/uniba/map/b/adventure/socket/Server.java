@@ -1,7 +1,7 @@
 package di.uniba.map.b.adventure.socket;
 
 import di.uniba.map.b.adventure.Engine;
-import di.uniba.map.b.adventure.type.CommandGUIOutput;
+import di.uniba.map.b.adventure.type.CommandOutputGui;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,10 +28,6 @@ public class Server implements ServerInterface {
      * Socket per la comunicazione
      */
     private Socket clientSocket;
-    /**
-     * Oggetto per la lettura di stringhe inviate dal client
-     */
-    private BufferedReader bufferedReader;
 
     /**
      * Oggetto per la scrittura di oggetti da inviare al client
@@ -62,7 +58,7 @@ public class Server implements ServerInterface {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.objectOutputStream = objectOutputStream;
-        CommandGUIOutput commandGUI = null;
+        CommandOutputGui commandGUI = null;
         Object resource = null;
         String commandString = bufferedReader.readLine();
 
@@ -88,7 +84,7 @@ public class Server implements ServerInterface {
      * @param commandGUIOutput Comando da inviare al client
      * @throws IOException Eccezione lanciata in caso di errore di I/O
      */
-    public void sendCommand(CommandGUIOutput commandGUIOutput) throws IOException {
+    public void sendCommand(CommandOutputGui commandGUIOutput) throws IOException {
         System.out.println(commandGUIOutput.getType());
         objectOutputStream.writeObject(commandGUIOutput);
         objectOutputStream.flush();

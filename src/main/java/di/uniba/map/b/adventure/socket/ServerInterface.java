@@ -1,7 +1,7 @@
 package di.uniba.map.b.adventure.socket;
 
 import di.uniba.map.b.adventure.Engine;
-import di.uniba.map.b.adventure.type.CommandGUIOutput;
+import di.uniba.map.b.adventure.type.CommandOutputGui;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public interface ServerInterface {
      * @param commandGUIOutput Comando da inviare al client
      * @throws IOException Eccezione lanciata in caso di errore di I/O
      */
-    void sendCommand(CommandGUIOutput commandGUIOutput) throws IOException;
+    void sendCommand(CommandOutputGui commandGUIOutput) throws IOException;
 
     /**
      * Metodo che si occupa di inviare risorse al client

@@ -31,7 +31,7 @@ public class Parser {
      * @param commands Lista di comandi
      * @return Indice del comando nella lista, -1 se non è un comando
      */
-    private int checkForCommand(String token, List<Command> commands) {
+    private int checkCommand(String token, List<Command> commands) {
         for (int i = 0; i < commands.size(); i++) {
             if (commands.get(i).getName().equals(token) || commands.get(i).getAlias().contains(token)) {
                 return i;
@@ -46,7 +46,7 @@ public class Parser {
      * @param objects Lista di oggetti
      * @return Indice dell'oggetto nella lista, -1 se non è un oggetto
      */
-    private int checkForObject(String token, List<AdvObject> objects) {
+    private int checkObject(String token, List<AdvObject> objects) {
         for (int i = 0; i < objects.size(); i++) {
             if (objects.get(i).getName().equals(token) || objects.get(i).getAlias().contains(token)) {
                 return i;
@@ -57,12 +57,12 @@ public class Parser {
 
     /**
      * Metodo di controllo per la password del telegrafo.
-     * @param tokens Lista di stringhe da controllare
+     * @param tokensList Lista di stringhe da controllare
      * @return Sottostringa che contiene la password senza virgolette, null altrimenti
      */
-    private String checkPassword(List<String> tokens)
+    private String checkPassword(List<String> tokensList)
     {
-        for (String s: tokens)
+        for (String s: tokensList)
         {
             if (s.charAt(0) == '"' && s.charAt(s.length()-1) == '"'){
                 return s.substring(1, s.length()-1);
@@ -83,18 +83,18 @@ public class Parser {
         List<String> tokens = Utils.parseString(command, stopwords);
         String aux_text;
         if (!tokens.isEmpty()) {
-            int ic = checkForCommand(tokens.get(0), commands);
+            int ic = checkCommand(tokens.get(0), commands);
             if (ic > -1) {
                 if (tokens.size() > 1) {
-                    int io = checkForObject(tokens.get(1), objects);
+                    int io = checkObject(tokens.get(1), objects);
                     int ioinv = -1;
                     if (io < 0 && tokens.size() > 2) {
-                        io = checkForObject(tokens.get(2), objects);
+                        io = checkObject(tokens.get(2), objects);
                     }
                     if (io < 0) {
-                        ioinv = checkForObject(tokens.get(1), inventory);
+                        ioinv = checkObject(tokens.get(1), inventory);
                         if (ioinv < 0 && tokens.size() > 2) {
-                            ioinv = checkForObject(tokens.get(2), inventory);
+                            ioinv = checkObject(tokens.get(2), inventory);
                         }
                     }
                     aux_text = checkPassword(tokens);

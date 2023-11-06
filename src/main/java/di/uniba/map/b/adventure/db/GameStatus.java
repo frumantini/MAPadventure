@@ -14,7 +14,7 @@ public class GameStatus implements Serializable {
     /**
      * Integer che rappresenta l'ultima stanza in cui si trovava l'utente.
      */
-    private Integer lastRoom_id;
+    private Integer lastRoomId;
     /**
      * Lista di Integer che rappresenta gli oggetti che l'utente ha in inventario.
      */
@@ -45,7 +45,7 @@ public class GameStatus implements Serializable {
      */
     public GameStatus(String username, Integer lastRoomId, List<Integer> inventoryIds, LocalDateTime time, Integer progress, Integer delay) {
         this.username = username;
-        this.lastRoom_id = lastRoomId;
+        this.lastRoomId = lastRoomId;
         this.inventory = inventoryIds;
         this.time = time;
         this.progress = progress;
@@ -62,10 +62,10 @@ public class GameStatus implements Serializable {
 
     /**
      * getter per ultima stanza in cui si trovava l'utente.
-     * @return lastRoom_id.
+     * @return lastRoomId.
      */
     public Integer getLastRoomId() {
-        return lastRoom_id;
+        return lastRoomId;
     }
 
     /**
@@ -132,7 +132,7 @@ public class GameStatus implements Serializable {
      * setter per ultima stanza in cui si trovava l'utente.
      */
     public void setLastRoomId(Integer lastRoom) {
-        this.lastRoom_id = lastRoom;
+        this.lastRoomId = lastRoom;
     }
 
     /**

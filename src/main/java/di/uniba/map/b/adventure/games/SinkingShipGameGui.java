@@ -3,7 +3,7 @@ package di.uniba.map.b.adventure.games;
 import di.uniba.map.b.adventure.db.GameStatus;
 import di.uniba.map.b.adventure.socket.Client;
 import di.uniba.map.b.adventure.socket.ClientInterface;
-import di.uniba.map.b.adventure.type.CommandGUIOutput;
+import di.uniba.map.b.adventure.type.CommandOutputGui;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
@@ -54,11 +54,6 @@ public class SinkingShipGameGui extends JFrame {
      * Boolean per la gestione della chiusura del gioco
      */
     private boolean shouldCloseGame = false;
-
-    /**
-     * JPanel per la gestione degli oggetti
-     */
-    private JPanel mapPanel = null;
 
     /**
      * JProgressBar per la gestione del tempo
@@ -337,7 +332,7 @@ public class SinkingShipGameGui extends JFrame {
     }*/
 
     private void initProgressBar(JPanel sidePanel) throws IOException, ClassNotFoundException {
-        CommandGUIOutput response;
+        CommandOutputGui response;
         liquidProgress = new JProgressBar(JProgressBar.VERTICAL, 0, 100);
         liquidProgress.setStringPainted(true);
         liquidProgress.setPreferredSize(new Dimension(50, 100));
@@ -346,7 +341,7 @@ public class SinkingShipGameGui extends JFrame {
         
         // Avvio del timer
         client.executeCommand("STARTTIMER");
-        progressBarListener = new ProgressBarListener(300000);
+        progressBarListener = new ProgressBarListener(20000);
         progressBarListener.start();
     }
     
@@ -448,7 +443,7 @@ public class SinkingShipGameGui extends JFrame {
         printer= new Printer(textArea, 10);
         String firstDescription = "Ti svegli all'interno di quella che sembra essere una cabina di una nave. Non hai idea di come ci sei arrivato," 
         + " ma un brutta sensazione ti pervade. Provi ad aprire la porta, ma ti accorgi che è chiusa a chiave. Cerca di uscirne vivo!\n\n Digita HELP per visualizzare i comandi disponibili\n\n";
-        performCommand(new CommandGUIOutput(CommandTypeGui.DISPLAY_TEXT,firstDescription));
+        performCommand(new CommandOutputGui(CommandTypeGui.DISPLAY_TEXT,firstDescription));
         textArea.setFont(new Font("Consolas", Font.PLAIN, 18));
         textArea.setEditable(false); // Rendi la JTextArea non modificabile
         textArea.setOpaque(false); // Rendi lo sfondo trasparente
@@ -466,13 +461,6 @@ public class SinkingShipGameGui extends JFrame {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         backgroundPanel.add(scrollPane, BorderLayout.NORTH);
-        /*backgroundPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                scrollPane.setVisible(!scrollPane.isVisible());
-            }
-        });*/
     }
 
     /**
@@ -530,7 +518,7 @@ public class SinkingShipGameGui extends JFrame {
         backgroundPanel.add(textField, BorderLayout.SOUTH);
 
         textField.addActionListener(e -> {
-            CommandGUIOutput responseToGUI;
+            CommandOutputGui responseToGUI;
             Printer printer = new Printer(textArea, 10);
             printer.setDelay(10);
             String inputText = textField.getText(); // Ottieni il testo inserito nella JTextField
@@ -568,7 +556,7 @@ public class SinkingShipGameGui extends JFrame {
      * esegue il comando
      * @param command Comando da eseguire
      */
-    public void performCommand(CommandGUIOutput command)
+    public void performCommand(CommandOutputGui command)
             throws IOException, ClassNotFoundException {
         switch (command.getType())
         {
@@ -578,9 +566,6 @@ public class SinkingShipGameGui extends JFrame {
             case CHANGE_ROOM:
                 this.setBackgroundImageFromPath(command.getResource());
                 appendAreaText(command.getText());
-                break;
-            case MAP:
-                showMap();
                 break;
             case DISPLAY_TEXT:
                 appendAreaText(command.getText());
@@ -625,8 +610,8 @@ public class SinkingShipGameGui extends JFrame {
                 "\n" +
                 "- NORD, SUD, EST, OVEST oppure \n- N, S, E, O\n" +
                 "\n" +
-                "Ti darò la descrizione completa di ogni stanza non appena vi entri" /*+ "la prima volta che vi entri,\n" +
-                "poi darò solo una descrizione breve"*/ + ". Se vuoi rileggere la descrizione della stanza in cui ti trovi dimmi:\n" +
+                "Ti darò la descrizione completa di ogni stanza non appena vi entri" +
+                ". Se vuoi rileggere la descrizione della stanza in cui ti trovi dimmi:\n" +
                 "\n" +
                 "- OSSERVA\n" +
                 "\n" +
@@ -682,7 +667,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * mostra le partite salvate !!!!!!!!!!!!!!!!! METTI AL CENTRO E IN BASSO
+     * mostra le partite salvate
      */
     private void showSavedGames()
             throws IOException, ClassNotFoundException {
@@ -708,18 +693,6 @@ public class SinkingShipGameGui extends JFrame {
         scrollPane.repaint();
     }
 
-    private void showMap() {
-        mapPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon backgroundImageIcon = new ImageIcon("resources/map.png");
-                Image backgroundImage = backgroundImageIcon.getImage();
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        add(mapPanel);
-    }
     /**
      * implementazione fine gioco
      * @param command comando da eseguire
@@ -749,34 +722,6 @@ public class SinkingShipGameGui extends JFrame {
         + "Phi ti ha infilzato con il coltello da cucina. ''Mi dispiace, ma neanche io voglio aspettare'' ti dice e sale sull'elicottero. ''Ma avevi detto che il coltello non ci serviva...'', bisbigli più a te stesso che a lei. Muori dissanguato...sei incredibile...\n\nGAME OVER");
         isDead = true;
         client.executeCommand("STOPTIMER");
-    }
-    
-    public class MapWindow extends JDialog {
-
-        public MapWindow(JFrame parent, String mapImagePath) {
-            super(parent, "Mappa", ModalityType.MODELESS);
-
-            // Carica l'immagine di sfondo della mappa
-            ImageIcon backgroundImageIcon = new ImageIcon(mapImagePath);
-
-             mapPanel = new JPanel() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    ImageIcon backgroundImageIcon = new ImageIcon("resources/map.png");
-                    Image backgroundImage = backgroundImageIcon.getImage();
-                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                }
-            };
-
-            setLayout(new BorderLayout());
-            add(mapPanel, BorderLayout.CENTER);
-
-            // Impostazioni della finestra
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Chiude solo questa finestra
-            setSize(800, 600); // Imposta le dimensioni iniziali
-            setLocationRelativeTo(parent); // Posiziona la finestra al centro del frame principale
-        }
     }
 
     /**
@@ -835,7 +780,7 @@ public class SinkingShipGameGui extends JFrame {
                         mainPanel.repaint();
                         try {
                             client.sendResourcesToServer("username:"+game.getUsername());
-                            CommandGUIOutput response = client.executeCommand("LOADGAME"); // Carica la partita
+                            CommandOutputGui response = client.executeCommand("LOADGAME"); // Carica la partita
                             performCommand(response); // Esegue il comando
 
                         } catch (IOException | ClassNotFoundException ex) {
@@ -946,7 +891,7 @@ public class SinkingShipGameGui extends JFrame {
             while (isRunning){
                 try {
                     Thread.sleep(delay);
-                    CommandGUIOutput response = client.executeCommand("INCREMENTPBVALUE");
+                    CommandOutputGui response = client.executeCommand("INCREMENTPBVALUE");
                     try{
                         setDelay(Integer.parseInt(response.getText()));
                     }catch (NumberFormatException ignored){}

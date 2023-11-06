@@ -38,24 +38,15 @@ public class Room {
      * background della stanza.
      */
     private Image backgroundImage;
-    /**
-     * background illuminato della stanza.
-     */
-    private Image backgroundEnlightedImage;
+
     /**
      * percorso del background della stanza.
      */
     private String backgroundImagePath;
-    /**
-     * percorso del background illuminato della stanza.
-     */
-    private String backgroundEnlightedImagePath;
 
     /**
-     * private boolean che rappresenta se la stanza è stata visitata o meno.
+     * Lista di oggetti contenuti nella stanza.
      */
-    
-    
     private final List<AdvObject> objects=new ArrayList<>();
 
     public Room(int id, String name, String description) {
@@ -208,17 +199,6 @@ public class Room {
         this.backgroundImage = backgroundImage;
     }
 
-    public void setBackgroundEnlightedImage(){
-        ImageIcon backgroundImageEnglightedIcon = new ImageIcon("resources/"+this.id+"d.png");
-        backgroundEnlightedImagePath= "resources/"+this.id+"d.png";
-        Image backgroundEnlightedImage = backgroundImageEnglightedIcon.getImage().getScaledInstance(backgroundImageEnglightedIcon.getIconWidth(), backgroundImageEnglightedIcon.getIconHeight(), Image.SCALE_SMOOTH);
-        this.backgroundEnlightedImage = backgroundEnlightedImage;
-    }
-
-    public Image getBackgroundEnlightedImage(){
-        return this.backgroundEnlightedImage;
-    }
-
     public Image getBackgroundImage(){
         return this.backgroundImage;
     }
@@ -226,9 +206,4 @@ public class Room {
     public String getBackgroundImagePath(){
         return this.backgroundImagePath;
     }
-
-    public String getBackgroundEnlightedImagePath(){
-        return this.backgroundEnlightedImagePath;
-    }
-
 }

@@ -7,7 +7,7 @@ import di.uniba.map.b.adventure.parser.Parser;
 import di.uniba.map.b.adventure.parser.ParserOutput;
 import di.uniba.map.b.adventure.socket.Server;
 import di.uniba.map.b.adventure.type.AdvObject;
-import di.uniba.map.b.adventure.type.CommandGUIOutput;
+import di.uniba.map.b.adventure.type.CommandOutputGui;
 import di.uniba.map.b.adventure.type.CommandTypeGui;
 import di.uniba.map.b.adventure.type.CommandType;
 import di.uniba.map.b.adventure.socket.ServerInterface;
@@ -65,7 +65,7 @@ public class Engine {
      * Costruttore della classe.
      * @param game gioco in esecuzione
      */
-    public Engine(GameDescription game) { // MODIFIED
+    public Engine(GameDescription game) {
         this.game = game;
         try {
             this.game.init();
@@ -211,7 +211,7 @@ public class Engine {
      * Metodo che fa partire l'engine.
      * @return output del comando
      */
-    public CommandGUIOutput execute() {
+    public CommandOutputGui execute() {
         String response;
         System.out.println("================================");
         System.out.println("* Adventure v. 0.4 - 2022-2023 *");
@@ -220,7 +220,7 @@ public class Engine {
         response = response + "\n================================================\n\n";
         response = response + game.getCurrentRoom().getDescription()+"\n";
         game.getCurrentRoom().setVisited(true);
-        return new CommandGUIOutput(CommandTypeGui.DISPLAY_TEXT, response);
+        return new CommandOutputGui(CommandTypeGui.DISPLAY_TEXT, response);
     }
 
     /**
@@ -229,63 +229,61 @@ public class Engine {
      * @return output del comando
      * @throws SQLException eccezione
      */
-    public CommandGUIOutput executeCommand(String command) throws SQLException {
-        String response =command + "\n\n";
-        CommandGUIOutput commandGUIOutput;
+    public CommandOutputGui executeCommand(String command) throws SQLException {
+        String response =command + "\n";
+        CommandOutputGui commandGUIOutput;
         CommandType commType;
         ParserOutput p = parser.parse(command, game.getCommands(), game.getCurrentRoom().getObjects(), game.getInventory());
         if (p == null || p.getCommand() == null) {
             response = response + "Non capisco quello che mi vuoi dire.\n";
         } else {
             commType = p.getCommand().getType();
-
             response = response + game.nextMove(p);
             switch (commType) {
                 case EAST:
                 case NORD:
                 case SOUTH:
                 case WEST:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.CHANGE_ROOM, response, game.getCurrentRoom().getBackgroundImagePath());
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.CHANGE_ROOM, response, game.getCurrentRoom().getBackgroundImagePath());
                     break;
                 case LOAD_GAME:
                     this.loadGame(this.getUsername());
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.LOAD_GAME, "Caricamento partita", String.valueOf(game.getCurrentRoom().getId()));
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.LOAD_GAME, "Caricamento partita", String.valueOf(game.getCurrentRoom().getId()));
                     break;
                 case HELP:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.HELP, response, null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.HELP, response, null);
                     break;
                 case END:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.END, response, null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.END, response, null);
                     break;
                 case SINK:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.SINK, response, null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.SINK, response, null);
                     break;
                 case STAB:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.STAB, response, null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.STAB, response, null);
                     break;
                 case INCREMENT_PB_VALUE:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.INCREMENT_PB_VALUE, String.valueOf(this.getTimer().getLiquidDelay()), String.valueOf(this.getProgressValue()));
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.INCREMENT_PB_VALUE, String.valueOf(this.getTimer().getLiquidDelay()), String.valueOf(this.getProgressValue()));
                     break;
                 case SAVE:
                     this.saveGame(this.getUsername());
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.SAVE, "", null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.SAVE, "", null);
                     break;
                 case START_TIMER:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.START_TIMER, "", null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.START_TIMER, "", null);
                     this.startTimer();
                     break;
                 case STOP_TIMER:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.STOP_TIMER, "", null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.STOP_TIMER, "", null);
                     this.endGame();
                     break;
                 default:
-                    commandGUIOutput = new CommandGUIOutput(CommandTypeGui.DISPLAY_TEXT, response, null);
+                    commandGUIOutput = new CommandOutputGui(CommandTypeGui.DISPLAY_TEXT, response, null);
                     break;
             }
             return commandGUIOutput;
         }
-
-        return commandGUIOutput = new CommandGUIOutput(CommandTypeGui.DISPLAY_TEXT, response, null);
+        return commandGUIOutput = new CommandOutputGui(CommandTypeGui.DISPLAY_TEXT, response, null);
     }
 
     /**
