@@ -1,0 +1,26 @@
+-classpath
+'C:/Users/fra/.m2/repository/com/h2database/h2/1.4.200/h2-1.4.200.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'1.8'
+-sourcepath
+'C:/Users/fra/AppData/Local/Programs/Git/MAPadventure/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2023. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/fra/AppData/Local/Programs/Git/MAPadventure/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'adventure 0.2-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'C:/Users/fra/AppData/Local/Programs/Git/MAPadventure/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'adventure 0.2-SNAPSHOT API'

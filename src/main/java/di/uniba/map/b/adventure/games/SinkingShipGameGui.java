@@ -18,54 +18,26 @@ import di.uniba.map.b.adventure.type.CommandTypeGui;
 
 public class SinkingShipGameGui extends JFrame {
 
-    /**
-     * Jpanel principale
-     */
     private JPanel mainPanel = null;
-    /**
-     * Jpanel di avvio
-     */
     private JPanel startPanel = null;
-    /**
-     * JTextArea per la stampa del testo
-     */
     private JTextArea textArea = null;
-    /**
-     * JScrollPane per la gestione dello scroll dell'outpur
-     */
     private JScrollPane scrollPane = null;
-    /**
-     * JTextField per l'inserimento del testo
-     */
     private JTextField textField = null;
     /**
-     * JPanel per contenere i loaded games
+     * Pannello per gestire i loaded games
      */
     private JPanel contentPanel = null;
     /**
-     * JPanel per il background dell'interfaccia
+     * Pannello per l'immagine di sfondo dell'interfaccia grafica
      */
     private JPanel backgroundPanel = null;
-    /**
-     * Image per il background dell'interfaccia
-     */
     private Image backgroundImage = null;
-    /**
-     * Boolean per la gestione della chiusura del gioco
-     */
     private boolean shouldCloseGame = false;
-
-    /**
-     * JProgressBar per la gestione del tempo
-     */
     private JProgressBar liquidProgress;
     /**
-     * Printer per la stampa del tempo
+     * Printer per la stampa del testo
      */
     private Printer printer;
-    /**
-     * Boolean per la gestione della morte del giocatore
-     */
     private boolean isDead = false;
     /**
      * Thread che rimane in ascolto per l'aggiornamento della liquidProgress
@@ -84,9 +56,7 @@ public class SinkingShipGameGui extends JFrame {
     public JProgressBar getProgressBar() {
         return liquidProgress;
     }
-    /**
-     * Costruttore
-     */
+
     public SinkingShipGameGui() {
         try {
             client = new Client();
@@ -100,7 +70,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello principale
+     * Metodo che inizializza il pannello principale
      */
     private void initMainPanel() {
         // Ottieni le dimensioni dello schermo
@@ -168,7 +138,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Apre il pannello di conferma nella chiusura del gioco
+     * Metodo che apre il pannello di conferma nella chiusura del gioco
      */
     private void openUsernameInputDialog(WindowEvent e)
             throws IOException, ClassNotFoundException {
@@ -207,7 +177,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello di avvio del gioco
+     * Metodo che inizializza il pannello di avvio del gioco
      */
     private void initStartPanel(){
         startPanel = new JPanel() {
@@ -277,7 +247,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello laterale
+     * Metodo che inizializza il pannello laterale
      */
     private void initSidePanel() throws IOException, ClassNotFoundException {
         // Immagine laterale
@@ -331,6 +301,9 @@ public class SinkingShipGameGui extends JFrame {
         sidePanel.add(imageContainer, BorderLayout.EAST);
     }*/
 
+    /**
+     * Metodo che inizializza la barra di avanzamento
+     */
     private void initProgressBar(JPanel sidePanel) throws IOException, ClassNotFoundException {
         CommandOutputGui response;
         liquidProgress = new JProgressBar(JProgressBar.VERTICAL, 0, 100);
@@ -345,6 +318,9 @@ public class SinkingShipGameGui extends JFrame {
         progressBarListener.start();
     }
     
+    /**
+     * Metodo che cambia il colore della barra di avanzamento
+     */
     public void changeProgressBarColor() {
         Color color = liquidProgress.getForeground();
         int red = color.getRed();
@@ -364,7 +340,7 @@ public class SinkingShipGameGui extends JFrame {
     }
     
     /**
-     * Aggiorna il valore della barra di avanzamento
+     * Metodo che aggiorna il valore della barra di avanzamento
      */
     public void incrementProgressBarValue(int progress)
             throws IOException, ClassNotFoundException {
@@ -378,7 +354,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello di sfondo
+     * Metodo che inizializza il pannello di sfondo
      */
     private void initBackgroundPanel(int roomId){
         ImageIcon backgroundImageIcon = new ImageIcon("resources/" +roomId+".png");
@@ -402,7 +378,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello di sfondo nel caso del caricamento di una partita salvata
+     * Metodo che inizializza il pannello di sfondo nel caso del caricamento di una partita salvata
      */
     private void initLoadGameBackgroundPanel(){
         ImageIcon backgroundImageIcon = new ImageIcon("resources/start.png");
@@ -424,7 +400,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello di output
+     * Metodo che  inizializza il pannello di output
      */
     private void initOutputArea() throws IOException, ClassNotFoundException {
 
@@ -464,7 +440,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello di output nel caso del caricamento di una partita salvata
+     * Metodo che inizializza il pannello di output nel caso del caricamento di una partita salvata
      */
     private void initOutputLoadedGamesArea(){
 
@@ -495,7 +471,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Inizializza il pannello di input
+     * Metodo che inizializza il pannello di input
      */
     private void initInputArea(){
         // Aggiungi la JTextField al pannello di sfondo
@@ -544,7 +520,7 @@ public class SinkingShipGameGui extends JFrame {
 
 
     /**
-     * setta il background
+     * Metodo che setta il background
      * @param path path dell'immagine
      */
     public void setBackgroundImageFromPath(String path) {
@@ -553,7 +529,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * esegue il comando
+     * Metodo che esegue il comando
      * @param command Comando da eseguire
      */
     public void performCommand(CommandOutputGui command)
@@ -590,7 +566,7 @@ public class SinkingShipGameGui extends JFrame {
 
 
     /**
-     * scrve il testo nella text area
+     * Metodo che scrive il testo nella text area
      * @param text testo da scrivere
      */
     public void appendAreaText(String text) {
@@ -598,11 +574,11 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * stampa a video il messaggio di help
+     * Metodo che stampa a video il messaggio di help
      * @return messaggio di help
      */
     public String helpCommand(){
-        return ("In questo goco devi cercare di scappare dalla nave in cui ti risvegli prima che essa affondi e ti porti giù con sè.\n" +
+        return ("In questo gioco devi cercare di scappare dalla nave in cui ti risvegli prima che essa affondi e ti porti giù con sè.\n" +
                 "Per portare a termire la tua missione devi essere in grado di osservare attentamente i dintorni ed essere il più rapido possibile,"+
                 "cercando di non tralasciare nulla indietro...\n" +
                 "\n" +
@@ -631,7 +607,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * fa partire il gioco inizializzando tutte le componenti
+     * Metodo che fa partire il gioco inizializzando tutte le componenti
      */
     private void startGame() throws IOException, ClassNotFoundException {
         mainPanel.remove(startPanel);
@@ -643,7 +619,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * fa partire il gioco salvato inizializzando tutte le componenti
+     * Metodo che fa partire il gioco salvato inizializzando tutte le componenti
      */
     private void startLoadedGame(int id)
             throws IOException, ClassNotFoundException {
@@ -655,7 +631,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * Carica le partite salvate
+     * Metodo che carica le partite salvate
      */
     private void loadGame()
             throws SQLException, IOException, ClassNotFoundException {
@@ -667,7 +643,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * mostra le partite salvate
+     * Metodo che mostra le partite salvate
      */
     private void showSavedGames()
             throws IOException, ClassNotFoundException {
@@ -694,7 +670,7 @@ public class SinkingShipGameGui extends JFrame {
     }
 
     /**
-     * implementazione fine gioco
+     * Metodo che esegue il comando di fine gioco
      * @param command comando da eseguire
      */
     public void endCommand(String command) throws IOException, ClassNotFoundException {
@@ -706,6 +682,10 @@ public class SinkingShipGameGui extends JFrame {
         client.executeCommand("STOPTIMER");
     }
 
+    /**
+     * Metodo che esegue il comando affonda nave
+     * @param command comando da eseguire
+     */
     public void sinkCommand(String command) throws IOException, ClassNotFoundException {
         textField.setEditable(false);
         progressBarListener.stopListener();
@@ -715,6 +695,10 @@ public class SinkingShipGameGui extends JFrame {
         client.executeCommand("STOPTIMER");
     }
 
+    /**
+     * Metodo che esegue il comando di morte per coltello
+     * @param command comando da eseguire
+     */
     public void stabCommand(String command) throws IOException, ClassNotFoundException {
         textField.setEditable(false);
         progressBarListener.stopListener();
@@ -729,7 +713,10 @@ public class SinkingShipGameGui extends JFrame {
      */
     public class SavedGame extends JPanel {
         /**
-         * Create the panel.
+         * Costruttore del pannello
+         * @param savedGames lista delle partite salvate
+         * @param mainPanel pannello principale
+         * @param contentPanel pannello di contenuto
          */
         public SavedGame(List<GameStatus> savedGames, JPanel mainPanel, JPanel contentPanel) {
             setLayout(new GridLayout(savedGames.size(), 1)); // Imposta il layout con una riga per ogni partita salvata
@@ -797,13 +784,8 @@ public class SinkingShipGameGui extends JFrame {
      * Classe per la stampa del testo con un effetto di scrittura
      */
     public static class Printer {
-        /**
-         * textArea
-         */
+
         private final JTextArea textArea;
-        /**
-         * delay
-         */
         private int delay;
         /**
          * Costruttore della classe

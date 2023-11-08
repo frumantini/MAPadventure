@@ -33,22 +33,42 @@ public class Command {
         this.alias = alias;
     }
 
+    /**
+     * getter del nome del comando.
+     * @return nome del comando.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * getter degli alias del comando.
+     * @param set degli alias del comando.
+     */
     public Set<String> getAlias() {
         return alias;
     }
 
+    /**
+     * setter degli alias del comando.
+     * @param alias alias del comando.
+     */
     public void setAlias(Set<String> alias) {
         this.alias = alias;
     }
 
+    /**
+     * setter degli alias del comando.
+     * @param alias alias del comando.
+     */
     public void setAlias(String[] alias) {
         this.alias = new HashSet<>(Arrays.asList(alias));
     }
 
+    /**
+     * getter di un tipo di comando.
+     * @param type tipo di comando.
+     */
     public CommandType getType() {
         return type;
     }

@@ -56,46 +56,90 @@ public class Room {
         setBackgroundImage();
     }
 
+    /**
+     * getter dell'id della stanza.
+     * @return id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * getter del nome della stanza.
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * setter del nome della stanza.
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * getter della descrizione della stanza.
+     * @return description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * setter della descrizione della stanza.
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * metodo che restituisce se la stanza è visibile o meno.
+     * @return visible
+     */
     public boolean isVisible() {
         return visible;
     }
 
+    /**
+     * metodo che setta se la stanza è visibile o meno.
+     * @param visible
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
+    /**
+     * metodo che restituisce se la stanza è bloccata o meno.
+     * @return locked
+     */
     public boolean isLocked() {
         return locked;
     }
 
+    /**
+     * metodo che setta se la stanza è bloccata o meno.
+     * @param locked
+     */
     public void setLocked(boolean locked) {
         this.locked = locked;
     }
 
+    /**
+     * metodo che restituisce se la stanza è buia o meno.
+     * @return dark
+     */
     public boolean isDark(){
         return dark;
     }
 
+    /**
+     * metodo che setta se la stanza è buia o meno.
+     * @param dark
+     */
     public void setDark(boolean dark){
         this.dark = dark;
     }
@@ -115,38 +159,74 @@ public class Room {
         this.visited = visited;
     }
 
+    /**
+     * getter della stanza a sud.
+     * @return south
+     */
     public Room getSouth() {
         return south;
     }
 
+    /**
+     * setter della stanza a sud.
+     * @param south
+     */
     public void setSouth(Room south) {
         this.south = south;
     }
 
+    /**
+     * getter della stanza a nord.
+     * @return north
+     */
     public Room getNorth() {
         return north;
     }
 
+    /**
+     * setter della stanza a nord.
+     * @param north
+     */
     public void setNorth(Room north) {
         this.north = north;
     }
 
+    /**
+     * getter della stanza ad est.
+     * @return east
+     */
     public Room getEast() {
         return east;
     }
 
+    /**
+     * setter della stanza ad est.
+     * @param east
+     */
     public void setEast(Room east) {
         this.east = east;
     }
 
+    /**
+     * getter della stanza ad ovest.
+     * @return west
+     */
     public Room getWest() {
         return west;
     }
 
+    /**
+     * setter della stanza ad ovest.
+     * @param west
+     */
     public void setWest(Room west) {
         this.west = west;
     }
 
+    /**
+     * getter della lista di oggetti contenuti nella stanza.
+     * @return objects
+     */
     public List<AdvObject> getObjects() {
         return objects;
     }

@@ -9,17 +9,20 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
 /**
  * Classe che gestisce la connessione al database.
+ * @author fra
  */
 public class DBManager {
     /**
-     * Connessione al database.
+     * Connessione al db.
      */
     private Connection connection;
+    
     /**
-     * Costruttore della classe.
-     * @throws SQLException
+     * Costruttore della classe DBManager.
+     * @throws SQLException eccezione lanciata in caso di errore di connessione al database.
      */
     public DBManager() throws SQLException {
         //connessione con oggetto Properties
@@ -30,6 +33,7 @@ public class DBManager {
 
         initTables();
     }
+
     /**
      * Metodo che inizializza le tabelle del database.
      * @throws SQLException eccezione lanciata in caso di errore di connessione al database.
@@ -46,6 +50,7 @@ public class DBManager {
         createTable.executeUpdate(query);
         createTable.close();
     }
+
     /**
      * Metodo che restituisce lo stato di gioco di un utente.
      * @param username nome utente.
@@ -79,6 +84,7 @@ public class DBManager {
         return null;
 
     }
+
     /**
      * Metodo che inserisce un nuovo stato di gioco nel database
      * @param gamestatus stato di gioco
@@ -101,6 +107,7 @@ public class DBManager {
         return statusCode;
 
     }
+
     /**
      * Metodo che restituisce tutti gli stati di gioco salvati.
      * @return lista di stati di gioco.

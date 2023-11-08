@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"di.uniba.map.b.adventure"},{"l":"di.uniba.map.b.adventure.db"},{"l":"di.uniba.map.b.adventure.games"},{"l":"di.uniba.map.b.adventure.parser"},{"l":"di.uniba.map.b.adventure.socket"},{"l":"di.uniba.map.b.adventure.type"}];updateSearchResults();

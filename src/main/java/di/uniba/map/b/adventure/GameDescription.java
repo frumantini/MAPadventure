@@ -11,36 +11,19 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Classe che descrive il gioco
+ * Classe astratta che descrive il gioco
  * @author fra
  */
 public abstract class GameDescription {
 
-    /**
-     * Lista di stanze
-     */
     private final List<Room> rooms = new ArrayList<>();
-
-    /**
-     * Lista di comandi
-     */
     private final List<Command> commands = new ArrayList<>();
-
-    /**
-     * Lista di oggetti
-     */
     private List<AdvObject> objects = new ArrayList<>();
-
-    /**
-     * Lista di oggetti nell'inventario
-     */
     private List<AdvObject> inventory = new ArrayList<>();
-
-    private TimerListener timer;
-
     /**
-     * Stanza corrente
+     * Timer del gioco
      */
+    private TimerListener timer;
     private Room currentRoom;
 
     /**
@@ -51,7 +34,7 @@ public abstract class GameDescription {
         return rooms;
     }
 
-    /** NEW
+    /**
      * Metodo che filtra le stanze in base ad un predicato
      * @param predicate predicato
      * @return lista di stanze filtrate
@@ -86,14 +69,14 @@ public abstract class GameDescription {
     }
 
     /**
-     * Getter degli oggetti
-     * @return Lista di oggetti
+     * Getter dei comandi
+     * @return Lista di comandi
      */
     public List<Command> getCommands() {
         return commands;
     }
 
-    /** NEW
+    /** 
      * Getter della lista di oggetti nel gioco
      * @return lista di oggetti nel gioco
      */
@@ -101,7 +84,7 @@ public abstract class GameDescription {
         return objects;
     }
 
-    /** NEW
+    /** 
      * Metodo che filtra gli oggetti in base ad un predicato
      * @param predicate predicato
      * @return lista di oggetti filtrati
@@ -127,7 +110,7 @@ public abstract class GameDescription {
         return inventory;
     }
 
-    /** NEW
+    /** 
      * Setter degli oggetti nell'inventario
      * @param inventoryObjects Lista di oggetti nell'inventario
      */
@@ -136,7 +119,7 @@ public abstract class GameDescription {
         this.inventory = inventoryObjects;
     }
 
-    /** NEW
+    /** 
      * Setter del timer del gioco
      * @param timer timer del gioco
      */
@@ -144,9 +127,9 @@ public abstract class GameDescription {
         this.timer = timer;
     }
 
-    /** NEW
+    /** 
      * Getter del timer del gioco
-     * @return  timer del gioco
+     * @return timer del gioco
      */
     public TimerListener getTimer() {
         return timer;
@@ -165,9 +148,8 @@ public abstract class GameDescription {
      */
     public abstract String nextMove(ParserOutput p);
 
-    /** NEW
-     * Metodo astratto che restituisce la descrizione del gioco
-     * @return Descrizione del gioco
+    /**
+     * Setter del motore del gioco
      */
     public void setEngine(Engine engine) {}
 

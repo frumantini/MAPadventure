@@ -18,21 +18,12 @@ public class TimerListener extends Thread {
      * progress int che indica il progresso della progress bar
      */
     private int progress = 0;
-
-    /**
-     * engine Engine che rappresenta il motore di gioco
-     */
     private Engine engine;
 
     /**
      * delay int che indica il tempo di attesa tra un incremento e l'altro della progress bar
      */
     private int delay;
-
-    /**
-     * Costruttore della classe TimerListener
-     * @param engine Engine che rappresenta il motore di gioco
-     */
 
     public TimerListener(Engine engine) {
         this.delay = 6000;
