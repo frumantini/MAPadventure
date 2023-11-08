@@ -35,7 +35,7 @@ public class Client implements ClientInterface {
      */
     public Client() throws IOException {
 
-        socket = new Socket("localhost", 5000);
+        socket = new Socket("localhost", 7777);
         objectReader = new ObjectInputStream(socket.getInputStream());
         bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
