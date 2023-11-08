@@ -20,7 +20,7 @@ Scopo del gioco è riuscire a uscire dalla nave in tempo, prima che la stessa af
 Per progredire nel gioco, infatti, il giocatore dovrà utilizzare il proprio ingegno e la capacità di analizzare gli indizi presenti nelle descrizioni delle stanze e degli oggetti, al fine di sbloccare le stanze e di risolvere enigmi, cercando di non cascare nei tranelli.
 
 ## **2 	Istruzioni di gioco**
-### **2-1 Avviamento programma**
+### **2-1  Avviamento programma**
 
 Ti svegli all'interno di quella che sembra essere una cabina di una nave. Non hai idea di come ci sei arrivato ma una brutta sensazione ti pervade. Provi ad aprire la porta, ma ti accorgi che è chiusa a chiave. Cerca di uscirne vivo!
 
