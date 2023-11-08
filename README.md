@@ -231,7 +231,7 @@ isEmpty(L) = if (L = <>) then true else false
 
 isEmpty(setList(L)) = false (la lista passata è popolata)
 
-isEmpty(remove(L, o)) = if isEmpty(L) then error else (if (L = <o>) then true else false)
+isEmpty(remove(L, o)) = if isEmpty(L) then error else (if (L = < o >) then true else false)
 
 SPECIFICA DI RESTRIZIONE
 
