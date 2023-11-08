@@ -316,7 +316,7 @@ public class SinkingShipGame extends GameDescription {
             getObjectsList().add(rug);
             getObjectsList().add(card);
 
-            // set starting room
+            //stanza iniziale
             setCurrentRoom(cabinA);
 
         } catch (IOException e) {
@@ -341,6 +341,10 @@ public class SinkingShipGame extends GameDescription {
         this.engine = engine;
     }
 
+    /**
+     * Metodo per gestire la riproduzione di un file audio.
+     * @param soundFilePath percorso del file audio
+     */
     public void playSound(String soundFilePath) {
         try {
             File soundFile = new File(soundFilePath);
@@ -352,7 +356,11 @@ public class SinkingShipGame extends GameDescription {
         }
     }
 
-    public String winCommand() { //non cambia il background
+    /**
+     * Metodo per gestire il comando win.
+     * @return out
+     */
+    public String winCommand() {
         String out = " ";
          if (getCurrentRoom().getId() == 16){
             setCurrentRoom(getCurrentRoom().getEast());
@@ -360,14 +368,15 @@ public class SinkingShipGame extends GameDescription {
             out += "| " + getCurrentRoom().getName() + "\n";
             out += " -------------------------------\n";
             out += getCurrentRoom().getDescription();
-        /*out += "Finalmente sei in salvo, la stanchezza comincia a farsi sentire. Mentre le palpebre calando, vedi in lontananza la nave che affonda."
-        + "Che strano, pensi tra te e te... non ho ancora capito perchè ci trovavamo lì... il buio di un sonno meritato ti pervade.\n\n\n\n"
-        + "CE L'HAI FATTA! HAI VINTO!";*/
             engine.endGame();
         }
         return out;
     }
 
+    /**
+     * Metodo per gestire il comando inventario.
+     * @return out 
+     */
     public String inventoryCommand() {
         String out = "Nel tuo inventario ci sono:\n";
         for (AdvObject o : getInventory()) {
@@ -395,7 +404,7 @@ public class SinkingShipGame extends GameDescription {
                         out += o.getName() + ": " + o.getDescription() + "\n";
                     }
                 }
-                if (nObjects == 0) { //ma serve sto controllo?
+                if (nObjects == 0) {
                     out = "Non c'è niente di interessante qui.";
                 }
             } else {
@@ -408,9 +417,8 @@ public class SinkingShipGame extends GameDescription {
 
     /**
      * Metodo per gestire la raccolta degli oggetti.
-     * 
-     * @param p
-     * @return
+     * @param p output del parser
+     * @return out
      */
     public String pickUpCommand(ParserOutput p) {
         String out = "";
@@ -438,9 +446,8 @@ public class SinkingShipGame extends GameDescription {
 
     /**
      * Metodo per gestire l'uso degli oggetti.
-     * 
-     * @param p
-     * @return
+     * @param p output del parser
+     * @return out
      */
     public String useCommand(ParserOutput p) {
         String out = "";
@@ -460,7 +467,7 @@ public class SinkingShipGame extends GameDescription {
                     case 3:
                         if (getCurrentRoom().getId() == 1){
                             out = "Hai aperto la porta della cabina.";
-                            getRooms().get(1).setLocked(false); //serve?
+                            getRooms().get(1).setLocked(false);
                             getRooms().get(2).setLocked(false);
                         } else if (getCurrentRoom().getId() == 19){
                             out = "Girati a Sud per aprire la porta della cabina.";
@@ -483,9 +490,7 @@ public class SinkingShipGame extends GameDescription {
                     case 7:
                         if ((p.getInvObject().isInspected()) && (getCurrentRoom().getId() == 41)) {
                             out = "Hai inserito il libro nella libreria. La libreria comincia a muoversi. Ora puoi accedere alla stanza a Nord";
-                            getCurrentRoom().setLocked(false);
-                            //getInventory().remove(p.getObject());
-                            
+                            getCurrentRoom().setLocked(false);                            
                         } else if (!(p.getInvObject().isInspected()) && (getCurrentRoom().getId() == 41)) {
                             out = "Forse dovresti prima sfogliare il libro...";
                         }
@@ -512,9 +517,8 @@ public class SinkingShipGame extends GameDescription {
 
     /**
      * Metodo per gestire il comando push.
-     * 
-     * @param p
-     * @return
+     * @param p output del parser
+     * @return out
      */
     public String pushCommand(ParserOutput p) {
         String out = "";
@@ -534,6 +538,11 @@ public class SinkingShipGame extends GameDescription {
         return out;
     }
 
+    /**
+     * Metodo per gestire il comando inspect.
+     * @param p output del parser
+     * @return out
+     */
     public String inspectCommand(ParserOutput p) {
         String out = "";
         if (p.getInvObject() == null && p.getObject().getId() != 7) {
@@ -563,16 +572,15 @@ public class SinkingShipGame extends GameDescription {
 
     /**
      * Metodo per gestire il comando move.
-     * 
-     * @param p
-     * @return
+     * @param p output del parser
+     * @return out
      */
     public String moveCommand(ParserOutput p) {
         String out = "";
         if (p.getObject() != null) {
             if (p.getObject().isMoveable()) {
                 if (p.getObject().getId() == 2) {
-                    out = "Hai spostato il cuscino. Hai trovato una chiave!";
+                    out = "Hai spostato il cuscino. Hai trovato una chiave! Non lasciarla li...";
                     getCurrentRoom().getObjects().remove(p.getObject());
                     AdvObject key = new AdvObject(3, "Chiave", "Una chiave antica.");
                     key.setAlias(new String[] { "chiave" });
@@ -600,14 +608,13 @@ public class SinkingShipGame extends GameDescription {
 
     /**
      * Metodo per gestire il comando unlock.
-     * 
-     * @param p
-     * @return
+     * @param p output del parser
+     * @return out
      */
     public String unlockCommand(ParserOutput p) {
         String out = "";
         if (p.getObject() != null) {
-            if (p.getObject().isUnlockable()) { //controllo su Id? Solo il telegrafo è sbloccabile
+            if (p.getObject().isUnlockable()) {
                     if (p.getObject().getPassword().equals(p.getPasswordInput())) {
                         out = "Hai sbloccato il telegrafo. E' stata mandata una richiesta di soccorso!";
                         getCurrentRoom().getObjects().remove(p.getObject());
@@ -627,7 +634,7 @@ public class SinkingShipGame extends GameDescription {
     
     /**
      * Metodo per gestire le mosse del giocatore.
-     * @param p ParserOutput
+     * @param p output del parser
      * @return out
      */
     @Override

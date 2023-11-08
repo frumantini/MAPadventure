@@ -5,36 +5,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe che rappresenta lo stato di gioco di un utente.
+ * Contiene le informazioni necessarie per ripristinare lo stato di gioco di un utente.
+ * Implementa l'interfaccia Serializable per poter essere salvata su file.
+ * @author fra
+ */
 public class GameStatus implements Serializable {
 
-    /**
-     * Stringa che rappresenta il nome utente.
-     */
     private String username;
-    /**
-     * Integer che rappresenta l'ultima stanza in cui si trovava l'utente.
-     */
     private Integer lastRoomId;
-    /**
-     * Lista di Integer che rappresenta gli oggetti che l'utente ha in inventario.
-     */
     private List<Integer> inventory;
-    /**
-     * LocalDateTime che rappresenta l'ora e la data in cui l'utente ha salvato la partita.
-     */
     private LocalDateTime time;
-
-    /**
-     * Integer che rappresenta il progresso della progress bar.
-     */
     private Integer progress;
-
-    /**
-     * Integer che rappresenta il tempo di attesa tra un incremento e l'altro della progress bar.
-     */
     private Integer delay;
-
-
 
     /**
      * Costruttore della classe GameStatus.
@@ -86,7 +70,7 @@ public class GameStatus implements Serializable {
 
     /**
      * getter per il tempo di attesa tra un incremento e l'altro della progress bar.
-     * @return delay.
+     * @return delay
      */
     public Integer getDelay() {
         return delay;
@@ -94,7 +78,7 @@ public class GameStatus implements Serializable {
 
     /**
      * setter per il tempo di attesa tra un incremento e l'altro della progress bar.
-     * @param delay tempo di attesa tra un incremento e l'altro della progress bar.
+     * @param delay tempo di attesa tra un incremento e l'altro della progress bar
      */
     public void setDelay(Integer delay) {
         this.delay = delay;
@@ -143,14 +127,14 @@ public class GameStatus implements Serializable {
     }
 
     /**
-     * setter per il tempo di salvataggio.
+     * getter del tempo di salvataggio.
      */
     public LocalDateTime getTime() {
         return time;
     }
 
     /**
-     * setter per il tempo.
+     * setter del tempo.
      */
     public void setTime(LocalDateTime time) {
         this.time = time;

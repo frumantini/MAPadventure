@@ -6,7 +6,7 @@ import java.io.Serializable;
  */
 public class CommandOutputGui implements Serializable {
     /**
-     * Enumerazione che rappresenta i tipi di output di un comando.
+     * Enumerativo dei possibili tipi di output di un comando.
      */
     private CommandTypeGui type;
     /**
@@ -28,52 +28,50 @@ public class CommandOutputGui implements Serializable {
         this.pathResource = resource;
         this.text = text;
     }
-    /**
-     * Costruttore della classe.
-     * @param type tipo di output
-     * @param text testo dell'output
-     */
+
     public CommandOutputGui(final CommandTypeGui type,final String text) {
         this.type = type;
         this.text = text;
     }
-    /**
-     * Costruttore della classe.
-     * @param type tipo di output
-     */
+
     public CommandOutputGui(final CommandTypeGui type) {
         this.type = type;
     }
+
     /**
-     * metodo che restituisce il testo dell'output.
+     * getter del testo dell'output.
      * @return type testo dell'output
      */
     public String getText() {
         return text;
     }
+
     /**
-     * metodo che restituisce il tipo di output.
+     * getter del tipo di output.
      * @return type tipo di output
      */
     public CommandTypeGui getType() {
         return type;
     }
+
     /**
-     * metodo che restituisce il percorso della risorsa da visualizzare.
+     * getter del percorso della risorsa da visualizzare.
      * @return pathResource percorso della risorsa da visualizzare
      */
     public String getResource() {
         return pathResource;
     }
+
     /**
-     * metodo che setta il testo dell'output.
-     * @param type testo dell'output
+     * setter del tipo dell'output.
+     * @param type dell'output
      */
     public void setType(final CommandTypeGui type) {
         this.type = type;
     }
+
     /**
-     * metodo che setta il il percorso della risorsa da visualizzare.
+     * setter del percorso della risorsa da visualizzare.
      */
     public void setResource(final String resource) {
         this.pathResource = resource;

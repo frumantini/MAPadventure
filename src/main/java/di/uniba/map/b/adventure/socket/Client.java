@@ -95,7 +95,7 @@ public class Client implements ClientInterface {
     }
 
     /**
-     * Chiudi la connessione con il server
+     * Metodo che chiude la connessione con il server
      * @throws IOException Eccezione lanciata in caso di errore di I/O
      */
     public void closeConnection() throws IOException {

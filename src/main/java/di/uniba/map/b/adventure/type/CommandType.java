@@ -1,7 +1,7 @@
 package di.uniba.map.b.adventure.type;
 
 /**
- * Classe enumerativa
+ * Classe enumerativa che rappresenta i possibili tipi di comando.
  * @author fra
  */
 public enum CommandType {

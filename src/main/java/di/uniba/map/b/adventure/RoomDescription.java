@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-/** NEW
+/**
  * Classe che gestisce le descrizioni delle stanze.
  * @author fra
  */
@@ -35,8 +35,9 @@ public class RoomDescription {
             return reader.lines().toArray(String[]::new);
         }
     }
+
     /**
-     * Metodo che restituisce la descrizione di una stanza.
+     * Getter della descrizione di una stanza.
      * @param i Indice della descrizione della stanza.
      * @return Descrizione della stanza.
      */
@@ -48,7 +49,7 @@ public class RoomDescription {
     }
 
     /**
-     * Metodo che restituisce il nome di una stanza.
+     * Getter del nome di una stanza.
      * @param i Indice del nome della stanza.
      * @return Nome della stanza.
      */

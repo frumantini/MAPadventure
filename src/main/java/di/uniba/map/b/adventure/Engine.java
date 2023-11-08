@@ -35,36 +35,27 @@ public class Engine {
      * Parser per il gioco.
      */
     private Parser parser;
-
     /**
      * Gestore del database.
      */
     private DBManager database;
-
     /**
      * Timer per il gioco.
      */
     private TimerListener timer;
-
     /**
-     * progressValue per la progress bar.
+     * Valore della progress bar.
      */
     private int progressValue;
-
     /**
      * Server per il gioco.
      */
     private ServerInterface server;
-
     /**
      * Username del giocatore.
      */
     private String username;
 
-    /**
-     * Costruttore della classe.
-     * @param game gioco in esecuzione
-     */
     public Engine(GameDescription game) {
         this.game = game;
         try {
@@ -95,7 +86,7 @@ public class Engine {
     }
 
     /**
-     * Metodo che restituisce il timer del gioco.
+     * getter del timer.
      * @return timer del gioco
      */
     public TimerListener getTimer() {
@@ -103,7 +94,7 @@ public class Engine {
     }
 
     /**
-     * Metodo che fa partire il timer del gioco.
+     * Metodo che fa partire il timer.
      */
     private void startTimer(){
         this.getTimer().start();
@@ -120,7 +111,7 @@ public class Engine {
     }
 
     /**
-     * Metodo che restituisce il valore della progress bar.
+     * getter del valore della progress bar.
      * @return valore della progress bar
      */
     public int getProgressValue() {
@@ -128,7 +119,7 @@ public class Engine {
     }
 
     /**
-     * Metodo che setta il valore della progress bar.
+     * setter del valore della progress bar.
      * @param progressValue valore della progress bar
      */
     public void setProgressValue(int progressValue) {
@@ -136,7 +127,7 @@ public class Engine {
     }
 
     /**
-     * Metodo che restituisce il username del gioco in esecuzione.
+     * setter dello username del gioco in esecuzione.
      * @param username username del giocatore
      */
     public void setUsername(String username){
@@ -144,7 +135,7 @@ public class Engine {
     }
 
     /**
-     * Metodo che restituisce il username del gioco in esecuzione.
+     * getter dello username del gioco in esecuzione.
      * @return username del giocatore
      */
     public String getUsername(){
@@ -324,6 +315,7 @@ public class Engine {
 
         return database.getAllSaves();
     }
+
     /**
      * Main del gioco che fa partire l'engine.
      * @param args the command line arguments

@@ -5,7 +5,6 @@ di\uniba\map\b\adventure\Engine$1.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$3.class
 di\uniba\map\b\adventure\parser\ParserOutput.class
 di\uniba\map\b\adventure\type\Command.class
-di\uniba\map\b\adventure\games\SinkingShipGameGui$MapWindow$1.class
 di\uniba\map\b\adventure\socket\ServerInterface.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$7.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$1.class
@@ -17,7 +16,6 @@ di\uniba\map\b\adventure\type\AdvObjectContainer.class
 di\uniba\map\b\adventure\db\DBManager.class
 di\uniba\map\b\adventure\db\GameStatus.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$13.class
-di\uniba\map\b\adventure\games\SinkingShipGameGui$MapWindow.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui.class
 di\uniba\map\b\adventure\type\CommandTypeGui.class
 di\uniba\map\b\adventure\type\TimerListener.class
@@ -28,11 +26,9 @@ di\uniba\map\b\adventure\socket\ClientInterface.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$4.class
 di\uniba\map\b\adventure\games\SinkingShipGame$1.class
 di\uniba\map\b\adventure\Engine.class
-di\uniba\map\b\adventure\type\CommandGUIOutput.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$10.class
 di\uniba\map\b\adventure\RoomDescription.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$2.class
-di\uniba\map\b\adventure\games\SinkingShipGameGui$14.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$SavedGame$1.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$SavedGame$2.class
 di\uniba\map\b\adventure\games\SinkingShipGameGui$Printer.class
