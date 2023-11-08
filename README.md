@@ -1,7 +1,7 @@
 # MAPadventure
 
 **Indice**
-1. [Introduzione](#1--Introduzione)
+1. [Descrizione del caso di studio](#1--Descrizione-del-caso-di-studio)
 2. [Diagramma delle classi](#2--Diagramma-delle-classi)
 3. [Specifica algebrica](#3--Specifica-algebrica)
 4. [Applicazione argomenti](#4--Applicazione-argomenti)
@@ -9,17 +9,21 @@
 
 <br/><br/>
 
-## **1  Introduzione**
+## **1 	Descrizione del caso di studio**
 
-La battaglia navale è tratta dall'omonimo gioco originariamente di carta e matita per due giocatori, estremamente popolare e diffuso in tutto il mondo. <br/>
-Lo *scopo del gioco* è localizzare tutte le unità della flotta navale nemica, composta da: quattro cacciatorpediniere, tre incrociatori, due corazzate e un portaerei.
+“Desert the sinking ship” è un'applicazione Java che simula un'avventura testuale all'interno di una nave in procinto di affondare.
+Scopo del gioco è riuscire a uscire dalla nave in tempo, prima che la stessa affondi completamente. Il giocatore deve essere dunque in grado di ispezionare con attenzione l'ambiente circostante, cercando di non tralasciare nulla durante il percorso e di compiere le scelte giuste.
+Per progredire nel gioco, infatti, il giocatore dovrà utilizzare il proprio ingegno e la capacità di analizzare gli indizi presenti nelle descrizioni delle stanze e degli oggetti, al fine di sbloccare le stanze e di risolvere enigmi, cercando di non cascare nei tranelli.
 
 **<ins>ISTRUZIONI</ins>**
 
-Il giocatore deve selezionare la casella (inserendo le coordinate) e "sparare un colpo"; se la casella sparata corrisponde a una nave viene mostrato a schermo il messaggio *"Colpito!"*, in caso negativo *"Mancato!"*. <br/>
-Quando un colpo centra l'ultima casella di una nave viene mostrato a schermo il messaggio *"Colpito e affondato!"*. <br/>
-Ci sono differenti livelli di difficoltà con un diverso numero massimo di tentativi falliti. <br/>
-Il giocatore **vince** se riesce ad affondare tutte le navi prima di esaurire tutti i tentativi.
+Ti svegli all'interno di quella che sembra essere una cabina di una nave. Non hai idea di come ci sei arrivato ma una brutta sensazione ti pervade. Provi ad aprire la porta, ma ti accorgi che è chiusa a chiave. Cerca di uscirne vivo!
+
+
+Per avviare il programma, è necessario eseguire due operazioni:
+1. avviare il server eseguendo Engine, che crea e gestisce il server per la comunicazione client-server. (Questo ti permetterà di stabilire una connessione e scambiare dati tra il client e il server)
+2. avviare il client eseguendo SinkingShipGameGui, che rappresenta l'interfaccia grafica del gioco. (Il client si connetterà al server precedentemente avviato e consentirà all'utente di giocare all'avventura testuale.)
+
 
 <br/><br/>
 
