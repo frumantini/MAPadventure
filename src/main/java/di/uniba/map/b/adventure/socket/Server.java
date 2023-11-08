@@ -42,7 +42,7 @@ public class Server implements ServerInterface {
     public Server(Engine engine) throws IOException {
         this.engine = engine;
 
-        serverSocket = new ServerSocket(5000);
+        serverSocket = new ServerSocket(7777);
 
         clientSocket=serverSocket.accept();
         System.out.println("Client connesso");
