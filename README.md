@@ -12,14 +12,14 @@
 5. [Applicazione argomenti](#5--Applicazione-argomenti)
 <br/><br/>
 
-## **1 	Descrizione del caso di studio**
+## **1  Descrizione del caso di studio**
 
 “Desert the sinking ship” è un'applicazione Java che simula un'avventura testuale all'interno di una nave in procinto di affondare.
 Scopo del gioco è riuscire a uscire dalla nave in tempo, prima che la stessa affondi completamente. Il giocatore deve essere dunque in grado di ispezionare con attenzione l'ambiente circostante, cercando di non tralasciare nulla durante il percorso e di compiere le scelte giuste.
 
 Per progredire nel gioco, infatti, il giocatore dovrà utilizzare il proprio ingegno e la capacità di analizzare gli indizi presenti nelle descrizioni delle stanze e degli oggetti, al fine di sbloccare le stanze e di risolvere enigmi, cercando di non cascare nei tranelli.
 
-## **2 	Istruzioni di gioco**
+## **2  Istruzioni di gioco**
 ### **2-1  Avviamento programma**
 
 Ti svegli all'interno di quella che sembra essere una cabina di una nave. Non hai idea di come ci sei arrivato ma una brutta sensazione ti pervade. Provi ad aprire la porta, ma ti accorgi che è chiusa a chiave. Cerca di uscirne vivo!
@@ -30,7 +30,7 @@ Per avviare il programma, è necessario eseguire due operazioni:
 
 2. avviare il client eseguendo SinkingShipGameGui, che rappresenta l'interfaccia grafica del gioco. (Il client si connetterà al server precedentemente avviato e consentirà all'utente di giocare all'avventura testuale.)
 
-### **2-2 Comandi di gioco**
+### **2-2  Comandi di gioco**
 Comandi di navigazione tra le stanze:
 
 •	nord (oppure N): permette di spostarsi a nord;
@@ -76,13 +76,13 @@ Comandi per terminare il gioco:
 
 •	io: termina il gioco per accoltellamento.
 
-### **2-3 Mappa di gioco**
+### **2-3  Mappa di gioco**
 Il gioco si articola su quattro piani, di cui tutte le stanze, meno quella in grigio, sono visitabili. 
 
 ![map](./resources/map.png)
 
 
-### **2-4 Soluzione ottimale del gioco**
+### **2-4  Soluzione ottimale del gioco**
 •	PRENDI LAMPADA
 
 •	N
