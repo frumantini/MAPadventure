@@ -216,7 +216,8 @@ isEmpty(List) -> Boolean
 SPECIFICA SEMANTICA
 
 **declare** L: List, o: TipoElem
-![specAlgebrica](./resources/specAlgebrica.png)
+
+![specAlgebrica](./resources/specAlgebrica.PNG)
 
 getList(setList(L)) = L
 
